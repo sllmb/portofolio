@@ -1,0 +1,436 @@
+/* ============================================================
+   MAIN.CSS — Base, composants et sections.
+   Organisation : reset → couches de fond → préloader → nav →
+   hero → sections → composants → footer → responsive → a11y.
+   ============================================================ */
+
+/* ---------- Reset minimal ---------- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+img { max-width: 100%; display: block; }
+button { font: inherit; background: none; border: none; cursor: pointer; color: inherit; }
+ul, ol { list-style: none; }
+a { color: inherit; }
+
+body {
+  background: var(--noir-cosmique);
+  color: var(--blanc-stellaire);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+h1, h2, h3 { font-family: var(--font-display); font-weight: 500; line-height: 1.15; }
+h2 { font-size: clamp(2rem, 5vw, 3.5rem); margin-bottom: var(--s-6); }
+h3 { font-size: 1.4rem; }
+.mono {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+p { max-width: 65ch; color: var(--gris-lunaire); }
+
+/* ---------- Couches de fond : canvas + nébuleuse ----------
+   z-index : canvas (0) < nébuleuse (1) < contenu (2) < nav (10) < préloader (100) */
+#stars {
+  position: fixed; inset: 0;
+  width: 100%; height: 100%;
+  z-index: 0; pointer-events: none;
+}
+.nebula { position: fixed; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; }
+.nebula::before, .nebula::after {
+  content: '';
+  position: absolute;
+  width: 60vmax; height: 60vmax;
+  border-radius: 50%;
+  filter: blur(90px);
+}
+.nebula::before {
+  top: -20vmax; left: -15vmax;
+  background: radial-gradient(circle, rgba(118,215,232,0.07), transparent 65%);
+}
+.nebula::after {
+  bottom: -25vmax; right: -20vmax;
+  background: radial-gradient(circle, rgba(40,70,140,0.10), transparent 65%);
+}
+main, .footer { position: relative; z-index: 2; }
+
+/* ---------- Préloader (Pack Spectacle B) ---------- */
+#preloader {
+  position: fixed; inset: 0; z-index: 100;
+  background: var(--noir-cosmique);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: var(--s-3);
+  transition: opacity var(--d-elem) var(--ease-space), visibility var(--d-elem);
+}
+#preloader.done { opacity: 0; visibility: hidden; }
+.preloader-lines { color: var(--gris-lunaire); min-height: 4.5em; text-align: left; }
+.preloader-lines .ok { color: var(--cyan-glacial); }
+.preloader-counter { color: var(--blanc-stellaire); font-size: 0.9rem; }
+
+/* ---------- Navigation ---------- */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 10;
+  height: 72px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 var(--s-6);
+  transition: background-color var(--d-micro) ease,
+              backdrop-filter var(--d-micro) ease,
+              transform var(--d-micro) var(--ease-space);
+}
+.nav.scrolled { background: rgba(5, 7, 13, 0.7); backdrop-filter: blur(12px); }
+.nav.hidden { transform: translateY(-100%); }
+.nav-logo { font-size: 0.9rem; text-decoration: none; color: var(--blanc-stellaire); }
+.nav-links { display: flex; gap: var(--s-4); }
+.nav-links a {
+  font-family: var(--font-mono); font-size: 0.72rem;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  text-decoration: none; color: var(--gris-lunaire);
+  position: relative; padding: 6px 0;
+  transition: color var(--d-micro) ease;
+}
+.nav-links a:hover { color: var(--blanc-stellaire); }
+/* Le point cyan sous le lien actif */
+.nav-links a::after {
+  content: ''; position: absolute;
+  left: 50%; bottom: -4px;
+  width: 4px; height: 4px; border-radius: 50%;
+  background: var(--cyan-glacial);
+  transform: translateX(-50%) scale(0);
+  transition: transform var(--d-micro) var(--ease-space);
+}
+.nav-links a.active::after { transform: translateX(-50%) scale(1); }
+.nav-right { display: flex; align-items: center; gap: var(--s-3); }
+.lang { color: var(--gris-lunaire); display: flex; gap: 6px; align-items: center; }
+.lang button { color: inherit; padding: 4px; transition: color var(--d-micro) ease; }
+.lang button.active, .lang button:hover { color: var(--cyan-glacial); }
+
+/* Burger : caché sur desktop */
+.burger { display: none; flex-direction: column; gap: 6px; padding: 8px; }
+.burger span {
+  display: block; width: 22px; height: 1.5px;
+  background: var(--blanc-stellaire);
+  transition: transform var(--d-micro) var(--ease-space), opacity var(--d-micro);
+}
+body.menu-open .burger span:first-child { transform: translateY(3.75px) rotate(45deg); }
+body.menu-open .burger span:last-child { transform: translateY(-3.75px) rotate(-45deg); }
+
+/* ---------- Hero (01 · Décollage) ---------- */
+.hero {
+  min-height: 100svh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center;
+  padding: 0 var(--s-3);
+  position: relative;
+}
+.hero-name {
+  font-size: clamp(2.8rem, 9vw, 6.5rem);
+  letter-spacing: 0.04em;
+}
+.hero-title { color: var(--gris-lunaire); margin-top: var(--s-2); }
+.hero-cta { margin-top: var(--s-6); }
+.constellation { width: min(320px, 70vw); color: var(--cyan-glacial); margin-bottom: var(--s-3); }
+.constellation circle { fill: currentColor; }
+.scroll-hint {
+  position: absolute; bottom: var(--s-4);
+  color: var(--gris-lunaire); font-size: 0.65rem;
+}
+
+/* La séquence d'ouverture : ne joue que si JS est actif (.is-ready)
+   et si l'utilisateur accepte les animations. Sinon : tout est visible. */
+@media (prefers-reduced-motion: no-preference) {
+  html.js .constellation polyline { stroke-dasharray: 600; stroke-dashoffset: 600; }
+  html.js .constellation circle,
+  html.js .hero-name, html.js .hero-title,
+  html.js .hero-cta, html.js .scroll-hint { opacity: 0; }
+
+  html.js body.is-ready .constellation polyline { animation: trace 1.3s var(--ease-space) 0.6s forwards; }
+  html.js body.is-ready .constellation circle { animation: fade 0.5s ease forwards; }
+  html.js body.is-ready .constellation circle:nth-child(2) { animation-delay: 0.6s; }
+  html.js body.is-ready .constellation circle:nth-child(3) { animation-delay: 0.8s; }
+  html.js body.is-ready .constellation circle:nth-child(4) { animation-delay: 1.0s; }
+  html.js body.is-ready .constellation circle:nth-child(5) { animation-delay: 1.2s; }
+  html.js body.is-ready .constellation circle:nth-child(6) { animation-delay: 1.4s; }
+  html.js body.is-ready .hero-name { animation: rise 0.9s var(--ease-space) 1.5s forwards; }
+  html.js body.is-ready .hero-title { animation: fade 0.8s ease 2.1s forwards; }
+  html.js body.is-ready .hero-cta { animation: fade 0.8s ease 2.4s forwards; }
+  html.js body.is-ready .scroll-hint { animation: fade 0.8s ease 2.7s forwards, pulse 2.4s ease 3.5s infinite; }
+}
+@keyframes trace { to { stroke-dashoffset: 0; } }
+@keyframes fade { to { opacity: 1; } }
+@keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+
+/* ---------- Sections génériques ---------- */
+.section {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: var(--s-20) var(--s-6); /* le vide entre sections, c'est l'espace */
+}
+.eyebrow { color: var(--cyan-glacial); margin-bottom: var(--s-2); }
+.prose p + p { margin-top: var(--s-3); }
+.vision {
+  color: var(--blanc-stellaire);
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  border-left: 1px solid var(--cyan-glacial);
+  padding-left: var(--s-3);
+}
+
+/* Titres assemblés (Pack Spectacle C) : chaque lettre devient un span */
+h2[data-split] .ch { display: inline-block; white-space: pre; }
+
+/* ---------- Boutons ---------- */
+.btn {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-size: 0.85rem; letter-spacing: 0.08em;
+  padding: 14px 28px;
+  border-radius: 999px;
+  text-decoration: none;
+  transition: background-color var(--d-micro) ease,
+              transform var(--d-micro) var(--ease-space),
+              border-color var(--d-micro) ease;
+}
+.btn:active { transform: scale(0.97); }
+.btn-primary { border: 1px solid var(--cyan-glacial); color: var(--cyan-glacial); }
+.btn-primary:hover { background: rgba(118, 215, 232, 0.08); transform: scale(1.02); }
+
+/* ---------- Compétences (03 · Constellation) ---------- */
+.constellations {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--s-6);
+}
+.constellation-group h3 { color: var(--gris-lunaire); margin-bottom: var(--s-3); font-size: 0.75rem; }
+.skills li {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 0;
+  color: var(--blanc-stellaire);
+  border-bottom: 1px solid var(--bordure);
+  transition: color var(--d-micro) ease;
+}
+/* L'étoile : sa taille (--s) encode le niveau de confort, sans pourcentage */
+.skills li::before {
+  content: '';
+  width: calc(4px + var(--s, 0.5) * 6px);
+  height: calc(4px + var(--s, 0.5) * 6px);
+  border-radius: 50%;
+  background: var(--blanc-stellaire);
+  opacity: calc(0.35 + var(--s, 0.5) * 0.65);
+  flex-shrink: 0;
+  transition: background-color var(--d-micro) ease, box-shadow var(--d-micro) ease;
+}
+.skills li:hover::before { background: var(--cyan-glacial); }
+.skills li:hover { color: var(--cyan-glacial); }
+
+/* ---------- Missions (04) ---------- */
+.missions { position: relative; display: grid; gap: var(--s-8); padding-left: var(--s-4); }
+.trajectory {
+  position: absolute; left: 0; top: 0; bottom: 0;
+  width: 1px; background: var(--bordure);
+  transform-origin: top;
+}
+.mission {
+  position: relative;
+  background: var(--bleu-abysse);
+  border: 1px solid var(--bordure);
+  border-radius: var(--radius);
+  padding: var(--s-4);
+  transition: transform var(--d-micro) var(--ease-space), border-color var(--d-micro) ease;
+}
+/* La planète emblème : flotte en haut à droite de la carte */
+.mission-planet {
+  position: absolute;
+  top: var(--s-3); right: var(--s-3);
+  width: 92px; height: 92px;
+  pointer-events: none;
+}
+.mission-planet svg {
+  width: 100%; height: 100%;
+  transition: transform var(--d-elem) var(--ease-space);
+}
+.mission:hover .mission-planet svg,
+.mission.active .mission-planet svg { transform: scale(1.06) rotate(2deg); }
+@media (prefers-reduced-motion: no-preference) {
+  /* Dérive perpétuelle très lente : la planète "flotte" en apesanteur */
+  .mission-planet { animation: float 7s ease-in-out infinite alternate; }
+}
+@keyframes float { to { transform: translateY(-4px); } }
+/* Le texte laisse la place à la planète */
+.mission-meta, .mission h3 { padding-right: 104px; }
+@media (max-width: 479px) {
+  .mission-planet { width: 64px; height: 64px; }
+  .mission-meta, .mission h3 { padding-right: 72px; }
+}
+.mission:hover, .mission.active {
+  transform: translateY(-4px);
+  border-color: rgba(118, 215, 232, 0.4);
+}
+.mission-meta {
+  display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+  color: var(--gris-lunaire);
+  margin-bottom: var(--s-3);
+}
+.status { color: var(--cyan-glacial); display: inline-flex; align-items: center; gap: 8px; }
+.dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--cyan-glacial);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .dot { animation: pulse 2s ease infinite; }
+  .mission:hover .dot, .mission.active .dot { animation-duration: 0.8s; }
+}
+.mission h3 { margin-bottom: var(--s-2); }
+.tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: var(--s-3); }
+.tags li {
+  border: 1px solid var(--bordure);
+  border-radius: 999px;
+  padding: 5px 12px;
+  color: var(--gris-lunaire);
+  font-size: 0.68rem;
+  transition: border-color var(--d-micro) ease;
+}
+.tags li:hover { border-color: var(--gris-lunaire); }
+.mission-links { margin-top: var(--s-3); display: flex; gap: var(--s-3); }
+.mission-links a {
+  font-family: var(--font-mono); font-size: 0.72rem;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--blanc-stellaire); text-decoration: none;
+  background-image: linear-gradient(var(--cyan-glacial), var(--cyan-glacial));
+  background-repeat: no-repeat;
+  background-size: 0% 1px;
+  background-position: left bottom;
+  padding-bottom: 3px;
+  transition: background-size var(--d-micro) var(--ease-space), color var(--d-micro) ease;
+}
+.mission-links a:hover { background-size: 100% 1px; color: var(--cyan-glacial); }
+
+/* ---------- Timeline (05 · Orbite) ---------- */
+.timeline { position: relative; padding-left: var(--s-4); }
+.timeline ol { display: grid; gap: var(--s-8); }
+.timeline-line {
+  position: absolute; left: 0; top: 0; bottom: 0;
+  width: 1px; background: var(--bordure);
+  transform-origin: top;
+}
+.step { position: relative; }
+.point {
+  position: absolute; left: calc(-1 * var(--s-4) - 4px); top: 6px;
+  width: 9px; height: 9px; border-radius: 50%;
+  background: var(--gris-lunaire);
+  transition: background-color var(--d-elem) ease, box-shadow var(--d-elem) ease;
+}
+.step.active .point {
+  background: var(--cyan-glacial);
+  box-shadow: 0 0 12px rgba(118, 215, 232, 0.6);
+}
+.step .date { color: var(--cyan-glacial); display: block; margin-bottom: 6px; }
+.step h3 { margin-bottom: 6px; }
+
+/* ---------- Contact (06 · Atterrissage) ---------- */
+.contact h2 { max-width: 18ch; }
+#contact-form { max-width: 540px; display: grid; gap: var(--s-3); margin-bottom: var(--s-8); }
+.field label { display: block; color: var(--gris-lunaire); margin-bottom: 8px; }
+.field input, .field textarea {
+  width: 100%;
+  background: var(--bleu-abysse);
+  border: 1px solid var(--bordure);
+  border-radius: 8px;
+  padding: 12px 14px;
+  color: var(--blanc-stellaire);
+  font: inherit; font-size: 0.95rem;
+  transition: border-color var(--d-micro) ease;
+}
+.field input:focus, .field textarea:focus {
+  outline: none;
+  border-color: var(--cyan-glacial);
+}
+#contact-form .btn { justify-self: start; }
+.form-status { color: var(--cyan-glacial); min-height: 1.2em; }
+.socials { display: flex; gap: var(--s-4); flex-wrap: wrap; }
+.socials a {
+  color: var(--gris-lunaire); text-decoration: none;
+  transition: color var(--d-micro) ease;
+}
+.socials a:hover { color: var(--cyan-glacial); }
+
+/* L'étoile filante : la récompense unique de l'envoi réussi */
+.shooting-star {
+  position: fixed; top: 18%; left: -240px; z-index: 50;
+  width: 220px; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--cyan-glacial));
+  transform: rotate(18deg);
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .shooting-star { animation: shoot 0.9s ease-in forwards; }
+}
+@keyframes shoot { to { transform: rotate(18deg) translateX(calc(100vw + 480px)); } }
+
+/* ---------- Footer (Station) ---------- */
+.footer {
+  display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--s-2);
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: var(--s-6);
+  color: var(--gris-lunaire);
+  border-top: 1px solid var(--bordure);
+}
+
+/* ---------- Accessibilité ---------- */
+.skip-link {
+  position: fixed; top: 8px; left: 8px; z-index: 200;
+  background: var(--bleu-abysse); color: var(--blanc-stellaire);
+  padding: 10px 16px; border-radius: 8px;
+  font-family: var(--font-mono); font-size: 0.75rem;
+  text-decoration: none;
+  transform: translateY(-200%);
+  transition: transform var(--d-micro) var(--ease-space);
+}
+.skip-link:focus { transform: translateY(0); }
+:focus-visible { outline: 2px solid var(--cyan-glacial); outline-offset: 3px; }
+
+/* ---------- Nébuleuse vivante (Pack Spectacle E) ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  .nebula::before { animation: drift1 28s ease-in-out infinite alternate; }
+  .nebula::after { animation: drift2 34s ease-in-out infinite alternate; }
+}
+@keyframes drift1 { to { transform: translate(8vmax, 6vmax) scale(1.15); } }
+@keyframes drift2 { to { transform: translate(-7vmax, -5vmax) scale(1.1); } }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1023px) {
+  .section { padding: var(--s-12) var(--s-4); }
+}
+@media (max-width: 767px) {
+  .section { padding: var(--s-12) 20px; }
+  .nav { padding: 0 20px; }
+  .burger { display: flex; }
+  /* Menu plein écran mobile */
+  .nav-links {
+    position: fixed; inset: 0;
+    background: rgba(5, 7, 13, 0.96);
+    flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: var(--s-4);
+    opacity: 0; visibility: hidden;
+    transition: opacity var(--d-micro) ease, visibility var(--d-micro);
+  }
+  .nav-links a { font-size: 1rem; }
+  body.menu-open .nav-links { opacity: 1; visibility: visible; }
+  body.menu-open { overflow: hidden; }
+  /* Cascade des liens à l'ouverture */
+  @media (prefers-reduced-motion: no-preference) {
+    .nav-links a { transform: translateY(16px); transition: transform 0.4s var(--ease-space), color var(--d-micro); }
+    body.menu-open .nav-links a { transform: translateY(0); }
+    body.menu-open .nav-links a:nth-child(2) { transition-delay: 0.06s; }
+    body.menu-open .nav-links a:nth-child(3) { transition-delay: 0.12s; }
+    body.menu-open .nav-links a:nth-child(4) { transition-delay: 0.18s; }
+    body.menu-open .nav-links a:nth-child(5) { transition-delay: 0.24s; }
+  }
+}

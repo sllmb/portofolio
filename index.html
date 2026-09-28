@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Votre Nom — Développeur en exploration</title>
+  <meta name="description" content="Portfolio spatial d'un développeur créatif : missions, parcours et compétences. Embarquez pour le voyage." />
+
+  <!-- Marqueur JS : permet au CSS de savoir que JavaScript est actif.
+       Si JS est désactivé, le contenu reste 100% visible (pas d'animations). -->
+  <script>document.documentElement.classList.add('js')</script>
+
+  <!-- Polices : Space Grotesk (titres), Inter (texte), JetBrains Mono (données) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- ÉTAPE B du Pack Spectacle : le préloader "console de vaisseau" -->
+  <div id="preloader" aria-hidden="true">
+    <div class="preloader-lines mono"></div>
+    <div class="preloader-counter mono">0%</div>
+  </div>
+
+  <!-- Le ciel : un seul canvas, fixé derrière tout le contenu -->
+  <canvas id="stars" aria-hidden="true"></canvas>
+  <!-- ÉTAPE E : la nébuleuse vivante (pur CSS) -->
+  <div class="nebula" aria-hidden="true"></div>
+
+  <a class="skip-link" href="#missions" data-i18n="a11y.skip">Aller au contenu</a>
+
+  <header class="nav" id="nav">
+    <a class="nav-logo mono" href="#hero">V·N</a>
+    <nav class="nav-links" aria-label="Navigation principale">
+      <a href="#apropos" data-i18n="nav.about">À propos</a>
+      <a href="#competences" data-i18n="nav.skills">Compétences</a>
+      <a href="#missions" data-i18n="nav.missions">Missions</a>
+      <a href="#parcours" data-i18n="nav.journey">Parcours</a>
+      <a href="#contact" data-i18n="nav.contact">Contact</a>
+    </nav>
+    <div class="nav-right">
+      <div class="lang mono" role="group" aria-label="Langue">
+        <button type="button" data-lang="fr" class="active">FR</button><span>/</span><button type="button" data-lang="en">EN</button>
+      </div>
+      <button class="burger" id="burger" aria-label="Menu" aria-expanded="false">
+        <span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ===================== 01 · DÉCOLLAGE ===================== -->
+    <section class="hero" id="hero" aria-label="Introduction">
+      <!-- La constellation au-dessus du nom : tracée en CSS via stroke-dashoffset -->
+      <svg class="constellation" viewBox="0 0 320 80" aria-hidden="true">
+        <polyline points="20,60 80,25 150,45 220,15 300,50" fill="none" stroke="currentColor" stroke-width="0.8" />
+        <circle cx="20" cy="60" r="2.6" /><circle cx="80" cy="25" r="2.6" />
+        <circle cx="150" cy="45" r="2.6" /><circle cx="220" cy="15" r="2.6" />
+        <circle cx="300" cy="50" r="2.6" />
+      </svg>
+      <h1 class="hero-name">VOTRE NOM</h1>
+      <p class="hero-title mono" data-i18n="hero.title">DÉVELOPPEUR EN EXPLORATION</p>
+      <a class="btn btn-primary hero-cta" href="#missions" data-i18n="hero.cta">Commencer le voyage</a>
+      <div class="scroll-hint mono" data-i18n="hero.scroll">DÉFILER POUR EMBARQUER</div>
+    </section>
+
+    <!-- ===================== 02 · NÉBULEUSE ===================== -->
+    <section class="section" id="apropos" aria-label="À propos">
+      <p class="eyebrow mono" data-i18n="about.eyebrow">02 · NÉBULEUSE</p>
+      <h2 data-split data-i18n="about.title">À propos</h2>
+      <div class="prose" data-reveal-group>
+        <p data-i18n="about.p1">Tout a commencé par une curiosité : comprendre comment les choses fonctionnent derrière l'écran. Cette curiosité est devenue une discipline, puis une direction.</p>
+        <p data-i18n="about.p2">Aujourd'hui, j'apprends le développement web avec méthode — chaque projet est une mission, chaque bug une anomalie à résoudre, chaque déploiement un petit lancement.</p>
+        <p class="vision" data-i18n="about.p3">Ma vision : construire des expériences web qui donnent autant de plaisir à utiliser qu'à fabriquer.</p>
+      </div>
+    </section>
+
+    <!-- ===================== 03 · CONSTELLATION ===================== -->
+    <section class="section" id="competences" aria-label="Compétences">
+      <p class="eyebrow mono" data-i18n="skills.eyebrow">03 · CONSTELLATION</p>
+      <h2 data-split data-i18n="skills.title">Compétences</h2>
+      <div class="constellations" data-reveal-group>
+        <div class="constellation-group">
+          <h3 class="mono" data-i18n="skills.g1">FRONTEND</h3>
+          <ul class="skills">
+            <li style="--s:1.0">HTML / CSS</li>
+            <li style="--s:0.9">JavaScript</li>
+            <li style="--s:0.7">GSAP</li>
+            <li style="--s:0.6">Canvas 2D</li>
+            <li style="--s:0.5">Vite</li>
+          </ul>
+        </div>
+        <div class="constellation-group">
+          <h3 class="mono" data-i18n="skills.g2">OUTILS</h3>
+          <ul class="skills">
+            <li style="--s:0.8">Git / GitHub</li>
+            <li style="--s:0.7">Figma</li>
+            <li style="--s:0.6">Netlify</li>
+            <li style="--s:0.5">Lighthouse</li>
+          </ul>
+        </div>
+        <div class="constellation-group">
+          <h3 class="mono" data-i18n="skills.g3">SOFT SKILLS</h3>
+          <ul class="skills">
+            <li style="--s:0.9" data-i18n="skills.s1">Curiosité</li>
+            <li style="--s:0.8" data-i18n="skills.s2">Rigueur</li>
+            <li style="--s:0.7" data-i18n="skills.s3">Autonomie</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== 04 · MISSIONS ===================== -->
+    <section class="section" id="missions" aria-label="Projets">
+      <p class="eyebrow mono" data-i18n="missions.eyebrow">04 · MISSIONS</p>
+      <h2 data-split data-i18n="missions.title">Journaux de mission</h2>
+
+      <div class="missions">
+        <!-- La trajectoire : la ligne qui se trace au scroll entre les missions -->
+        <div class="trajectory" aria-hidden="true"></div>
+
+        <article class="mission" data-reveal>
+          <div class="mission-planet" data-planet="gas" aria-hidden="true"></div>
+          <div class="mission-meta mono">
+            <span class="status"><span class="dot"></span><span data-i18n="missions.m1.status">EN DÉVELOPPEMENT</span></span>
+            <span data-i18n="missions.m1.date">DÉPART — 2026.04</span>
+          </div>
+          <h3 data-i18n="missions.m1.name">Nom de code : Orion</h3>
+          <p data-i18n="missions.m1.desc">Objectif de la mission : décrire ici votre premier projet — le problème visé, l'approche, et ce que vous apprenez en route. Remplacez ce texte par le vôtre.</p>
+          <ul class="tags mono"><li>HTML</li><li>CSS</li><li>JavaScript</li></ul>
+          <div class="mission-links">
+            <a href="https://github.com/" target="_blank" rel="noopener">GitHub ↗</a>
+            <a href="#" data-i18n="missions.demo">Démo ↗</a>
+          </div>
+        </article>
+
+        <article class="mission" data-reveal>
+          <div class="mission-planet" data-planet="rocky" aria-hidden="true"></div>
+          <div class="mission-meta mono">
+            <span class="status"><span class="dot"></span><span data-i18n="missions.m2.status">EN ORBITE</span></span>
+            <span data-i18n="missions.m2.date">DÉPART — 2026.05</span>
+          </div>
+          <h3 data-i18n="missions.m2.name">Nom de code : Lyra</h3>
+          <p data-i18n="missions.m2.desc">Deuxième mission : un projet en cours de stabilisation. Décrivez les défis rencontrés et la prochaine étape du journal de bord.</p>
+          <ul class="tags mono"><li>JavaScript</li><li>GSAP</li><li>Vite</li></ul>
+          <div class="mission-links">
+            <a href="https://github.com/" target="_blank" rel="noopener">GitHub ↗</a>
+          </div>
+        </article>
+
+        <article class="mission" data-reveal>
+          <div class="mission-planet" data-planet="ice" aria-hidden="true"></div>
+          <div class="mission-meta mono">
+            <span class="status"><span class="dot"></span><span data-i18n="missions.m3.status">EN PRÉPARATION</span></span>
+            <span data-i18n="missions.m3.date">DÉPART — 2026.07</span>
+          </div>
+          <h3 data-i18n="missions.m3.name">Nom de code : Vega</h3>
+          <p data-i18n="missions.m3.desc">Mission planifiée : ce portfolio lui-même, puis sa version 2 — scroll horizontal des missions et curseur magnétique. Le voyage continue.</p>
+          <ul class="tags mono"><li>Canvas</li><li>GSAP</li><li>i18n</li></ul>
+        </article>
+      </div>
+    </section>
+
+    <!-- ===================== 05 · ORBITE ===================== -->
+    <section class="section" id="parcours" aria-label="Parcours">
+      <p class="eyebrow mono" data-i18n="journey.eyebrow">05 · ORBITE</p>
+      <h2 data-split data-i18n="journey.title">Parcours</h2>
+      <div class="timeline">
+        <div class="timeline-line" aria-hidden="true"></div>
+        <ol>
+        <li class="step">
+          <span class="point" aria-hidden="true"></span>
+          <span class="date mono">2024</span>
+          <h3 data-i18n="journey.j1.t">Le déclic</h3>
+          <p data-i18n="journey.j1.d">Première ligne de code. Découverte du HTML et du CSS — et de l'envie de construire.</p>
+        </li>
+        <li class="step">
+          <span class="point" aria-hidden="true"></span>
+          <span class="date mono">2025</span>
+          <h3 data-i18n="journey.j2.t">L'entraînement</h3>
+          <p data-i18n="journey.j2.d">Apprentissage structuré de JavaScript. Premiers projets personnels, premiers dépôts GitHub.</p>
+        </li>
+        <li class="step">
+          <span class="point" aria-hidden="true"></span>
+          <span class="date mono">2026</span>
+          <h3 data-i18n="journey.j3.t">La mise en orbite</h3>
+          <p data-i18n="journey.j3.d">Construction de ce portfolio : animation, accessibilité, performance. Le laboratoire de tout ce que j'apprends.</p>
+        </li>
+        <li class="step">
+          <span class="point" aria-hidden="true"></span>
+          <span class="date mono">→</span>
+          <h3 data-i18n="journey.j4.t">Prochaine destination</h3>
+          <p data-i18n="journey.j4.d">React, puis l'écosystème complet. Objectif : contribuer à des projets réels.</p>
+        </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ===================== 06 · ATTERRISSAGE ===================== -->
+    <section class="section contact" id="contact" aria-label="Contact">
+      <p class="eyebrow mono" data-i18n="contact.eyebrow">06 · ATTERRISSAGE</p>
+      <h2 data-split data-i18n="contact.title">Fin de la transmission. À vous de jouer.</h2>
+
+      <form id="contact-form" novalidate>
+        <!-- Web3Forms : remplacez la valeur par votre clé gratuite (web3forms.com) -->
+        <input type="hidden" name="access_key" value="VOTRE_CLE_WEB3FORMS" />
+        <div class="field">
+          <label for="f-name" class="mono" data-i18n="contact.name">VOTRE NOM</label>
+          <input id="f-name" name="name" type="text" required autocomplete="name" />
+        </div>
+        <div class="field">
+          <label for="f-email" class="mono" data-i18n="contact.email">VOTRE EMAIL</label>
+          <input id="f-email" name="email" type="email" required autocomplete="email" />
+        </div>
+        <div class="field">
+          <label for="f-msg" class="mono" data-i18n="contact.msg">VOTRE MESSAGE</label>
+          <textarea id="f-msg" name="message" rows="5" required></textarea>
+        </div>
+        <button class="btn btn-primary" type="submit" data-i18n="contact.send">Transmettre</button>
+        <p class="form-status mono" id="form-status" role="status" aria-live="polite"></p>
+      </form>
+
+      <div class="socials mono">
+        <a href="https://github.com/" target="_blank" rel="noopener">GITHUB ↗</a>
+        <a href="https://www.linkedin.com/" target="_blank" rel="noopener">LINKEDIN ↗</a>
+        <a href="mailto:vous@exemple.com">EMAIL ↗</a>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===================== STATION (FOOTER) ===================== -->
+  <footer class="footer mono">
+    <span>© 2026 — VOTRE NOM</span>
+    <span class="coords">14.7167° N, 17.4677° W — DAKAR</span>
+  </footer>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

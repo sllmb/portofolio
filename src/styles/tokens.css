@@ -1,0 +1,32 @@
+/* ============================================================
+   TOKENS — La source de vérité du design system.
+   Toute couleur, durée ou espacement utilisé ailleurs vient d'ici.
+   ============================================================ */
+:root {
+  /* Palette spatiale (Étape 3) */
+  --noir-cosmique: #05070D;   /* fond : l'espace lui-même */
+  --bleu-abysse:   #0C111E;   /* surfaces : cartes, champs */
+  --blanc-stellaire:#E9EEF6;  /* texte principal */
+  --gris-lunaire:  #7E8BA3;   /* texte secondaire */
+  --cyan-glacial:  #76D7E8;   /* L'accent. Rare et précieux : max 5% de l'écran */
+  --bordure:       #1C2840;   /* bordures fines dérivées du bleu abysse */
+
+  /* Typographie */
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-body:    'Inter', sans-serif;
+  --font-mono:    'JetBrains Mono', monospace;
+
+  /* Le système de mouvement (Étape 4) : 3 durées, 1 signature d'easing */
+  --d-micro: 300ms;
+  --d-elem:  600ms;
+  --d-section: 1200ms;
+  /* "Apesanteur" : départ rapide, arrivée flottante */
+  --ease-space: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Échelle d'espacement base 8 */
+  --s-2: 16px; --s-3: 24px; --s-4: 32px;
+  --s-6: 48px; --s-8: 64px; --s-12: 96px; --s-20: 160px;
+
+  --maxw: 1200px;       /* largeur maximale du contenu */
+  --radius: 12px;
+}
