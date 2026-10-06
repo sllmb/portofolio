@@ -5,11 +5,17 @@
 :root {
   /* Palette spatiale (Étape 3) */
   --noir-cosmique: #05070D;   /* fond : l'espace lui-même */
+  --ciel-nuit:     #0B1226;   /* fond du site : bleu nuit, moins noir que l'espace profond */
   --bleu-abysse:   #0C111E;   /* surfaces : cartes, champs */
   --blanc-stellaire:#E9EEF6;  /* texte principal */
-  --gris-lunaire:  #7E8BA3;   /* texte secondaire */
+  --gris-lunaire:  #8D9AB3;   /* texte secondaire (≥ 4,5:1 même sous la lumière du Soleil) */
   --cyan-glacial:  #76D7E8;   /* L'accent. Rare et précieux : max 5% de l'écran */
   --bordure:       #1C2840;   /* bordures fines dérivées du bleu abysse */
+
+  /* Le voyage vers le Soleil (solar.js) : le chaud reste dans le ciel,
+     le cyan reste l'accent de l'interface */
+  --soleil-coeur:  #FFF4D6;
+  --soleil:        #FFB24C;
 
   /* Typographie */
   --font-display: 'Space Grotesk', sans-serif;

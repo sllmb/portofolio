@@ -18,6 +18,7 @@ import { splitTitles, initReveals, initLines, initSteps, refresh } from './js/re
 import { initNav } from './js/nav.js';
 import { initForm } from './js/form.js';
 import { initPlanets } from './js/planets.js';
+import { initSolar } from './js/solar.js';
 import { initFx, decodeHeroRole } from './js/fx.js';
 
 // 1. Langue : appliquée immédiatement pour éviter tout "flash" de mauvais texte
@@ -41,6 +42,7 @@ initSteps();
 initNav(starfield);
 initForm();
 initPlanets();
+initSolar();
 initFx();
 
 // 5. Changement de langue : on redécoupe les titres (le texte a changé)
