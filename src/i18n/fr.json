@@ -6,8 +6,8 @@
   "a11y.hero": "Introduction",
   "a11y.projects": "Projets",
 
-  "meta.title": "Salamba Diène — Développeur web en exploration",
-  "meta.desc": "Portfolio spatial d'un développeur créatif : missions, parcours et compétences. Embarquez pour le voyage.",
+  "meta.title": "Salamba Diène — Développeuse web en exploration",
+  "meta.desc": "Portfolio spatial d'une développeuse créative : missions, parcours et compétences. Embarquez pour le voyage.",
 
   "preloader.systems": "SYSTÈMES",
   "preloader.nav": "NAVIGATION",
@@ -21,8 +21,10 @@
   "nav.journey": "Parcours",
   "nav.contact": "Contact",
 
-  "hero.title": "DÉVELOPPEUR WEB EN EXPLORATION · DAKAR",
+  "hero.title": "DÉVELOPPEUSE WEB EN EXPLORATION · DAKAR",
   "hero.cta": "Commencer le voyage",
+  "cv.download": "Télécharger le CV",
+  "cv.link": "CV ↓",
   "hero.scroll": "DÉFILER POUR EMBARQUER",
 
   "about.eyebrow": "02 · NÉBULEUSE",
@@ -47,6 +49,11 @@
   "missions.m1.date": "DÉPART — 2026.03",
   "missions.m1.name": "Xibaar Yi",
   "missions.m1.desc": "« Les nouvelles », en wolof : un site d'actualité sénégalaise en PHP et MySQL, sans framework. Les vrais titres des médias sénégalais arrivent automatiquement par flux RSS, les commentaires sont modérés, et un back-office gère les rôles. Sessions, protection CSRF, envoi d'images : j'ai tout écrit à la main pour comprendre ce que font les frameworks. Projet d'équipe à l'ESP, que je maintiens et sécurise depuis.",
+  "missions.video": "Vidéo ↗",
+  "missions.m2.status": "TERMINÉ",
+  "missions.m2.date": "LICENCE 1 · ESP",
+  "missions.m2.name": "Gestion académique",
+  "missions.m2.desc": "Un logiciel en C pour gérer les notes et les matières des étudiants. Un projet d'algorithmique réalisé en équipe à l'ESP : structures de données et logique écrites de bout en bout en C.",
   "missions.m3.status": "EN LIGNE",
   "missions.m3.date": "DÉPART — 2026.09",
   "missions.m3.name": "Le Voyage Observé",

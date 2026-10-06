@@ -43,7 +43,7 @@ Missions, Orbite, Atterrissage) and the craft of the experience is the argument.
 
 ## Brand Commitments
 
-- Name: Salamba Diène; logo initials `S·D`; tagline "Développeur en exploration" / "Developer in exploration".
+- Name: Salamba Diène; logo initials `S·D`; tagline "Développeuse web en exploration · Dakar" / "Web developer in exploration · Dakar".
 - Contact email: salambadiene@esp.sn. Footer coordinates: Dakar (14.7167° N, 17.4677° W).
 - Voice: space-mission metaphor, calm and precise; console/mission-log vocabulary
   (missions, transmission, décollage, orbite), uppercase mono labels.

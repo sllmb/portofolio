@@ -23,6 +23,8 @@
 
   "hero.title": "WEB DEVELOPER IN EXPLORATION · DAKAR",
   "hero.cta": "Begin the journey",
+  "cv.download": "Download CV (French)",
+  "cv.link": "CV (FR) ↓",
   "hero.scroll": "SCROLL TO BOARD",
 
   "about.eyebrow": "02 · NEBULA",
@@ -47,6 +49,11 @@
   "missions.m1.date": "LAUNCH — 2026.03",
   "missions.m1.name": "Xibaar Yi",
   "missions.m1.desc": "“The news” in Wolof: a Senegalese news site in PHP and MySQL, with no framework. Real headlines from Senegalese media arrive automatically via RSS, comments are moderated, and a back-office handles roles. Sessions, CSRF protection, image uploads: I wrote it all by hand to understand what frameworks do. A team project at ESP that I have maintained and hardened since.",
+  "missions.video": "Video ↗",
+  "missions.m2.status": "COMPLETED",
+  "missions.m2.date": "YEAR 1 · ESP",
+  "missions.m2.name": "Academic manager",
+  "missions.m2.desc": "A C program to manage students' grades and subjects. An algorithms team project built at ESP: data structures and logic written end to end in C.",
   "missions.m3.status": "LIVE",
   "missions.m3.date": "LAUNCH — 2026.09",
   "missions.m3.name": "Le Voyage Observé",

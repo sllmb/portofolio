@@ -135,6 +135,7 @@ body.menu-open .burger span:last-child { transform: translateY(-3.75px) rotate(-
 }
 .hero-title { color: var(--gris-lunaire); margin-top: var(--s-2); text-wrap: balance; }
 .hero-cta { margin-top: var(--s-6); }
+.hero-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--s-2); }
 .constellation { width: min(320px, 70vw); color: var(--cyan-glacial); margin-bottom: var(--s-3); }
 .constellation circle { fill: currentColor; }
 .scroll-hint {
@@ -208,6 +209,9 @@ h2[data-split] .ch { display: inline-block; }
 .nav-logo, .socials a { display: inline-block; }
 .btn-primary { border: 1px solid var(--cyan-glacial); color: var(--cyan-glacial); }
 .btn-primary:hover { background: rgba(118, 215, 232, 0.08); transform: scale(1.02); }
+/* Action secondaire : même forme, sans l'accent cyan (réservé à l'action principale) */
+.btn-secondary { border: 1px solid rgba(126, 139, 163, 0.45); color: var(--blanc-stellaire); }
+.btn-secondary:hover { border-color: var(--gris-lunaire); transform: scale(1.02); }
 
 /* ---------- Compétences (03 · Constellation) ---------- */
 .constellations {
