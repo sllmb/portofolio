@@ -42,7 +42,7 @@ initSteps();
 initNav(starfield);
 initForm();
 initPlanets();
-initSolar();
+initSolar(starfield);
 initFx();
 
 // 5. Changement de langue : on redécoupe les titres (le texte a changé)
