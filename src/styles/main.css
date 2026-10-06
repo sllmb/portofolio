@@ -133,7 +133,7 @@ body.menu-open .burger span:last-child { transform: translateY(-3.75px) rotate(-
   font-size: clamp(2.8rem, 9vw, 6.5rem);
   letter-spacing: 0.04em;
 }
-.hero-title { color: var(--gris-lunaire); margin-top: var(--s-2); }
+.hero-title { color: var(--gris-lunaire); margin-top: var(--s-2); text-wrap: balance; }
 .hero-cta { margin-top: var(--s-6); }
 .constellation { width: min(320px, 70vw); color: var(--cyan-glacial); margin-bottom: var(--s-3); }
 .constellation circle { fill: currentColor; }

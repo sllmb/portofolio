@@ -138,7 +138,7 @@ export function decodeHeroRole() {
       if (el.textContent !== written) { tween.kill(); done(); return; }
       const fixed = Math.floor(state.p * final.length);
       written = [...final].map((ch, i) => {
-        if (i < fixed || ch === ' ') return ch;
+        if (i < fixed || /\s/.test(ch)) return ch; // espaces (insécables compris) intacts
         return GLYPHS[(Math.random() * GLYPHS.length) | 0];
       }).join('');
       el.textContent = written;
