@@ -145,15 +145,60 @@ const DRAW = {
    l'autre sens. */
 const TURN = { jupiter: 16, saturn: 17, neptune: 24, earth: 34, mars: 35, mercury: 90, venus: -140, moon: 48 };
 
-/* La ceinture d'astéroïdes, entre Jupiter et Mars : une bande de points */
-function belt() {
-  let dots = '';
-  for (let i = 0; i < 70; i++) {
-    const x = Math.random() * 1000;
-    const y = 30 + Math.sin(x / 160) * 12 + (Math.random() - 0.5) * 30;
-    dots += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${(0.8 + Math.random() * 2).toFixed(1)}"/>`;
-  }
-  return `<svg viewBox="0 0 1000 60" preserveAspectRatio="none">${dots}</svg>`;
+/* La ceinture d'astéroïdes, entre Jupiter et Mars : trois couches qui
+   défilent sans fin, chacune à sa vitesse (les plus proches vont plus vite,
+   comme par la fenêtre d'un train). Les gros rochers du premier plan ont une
+   forme irrégulière et tournent sur eux-mêmes. Période W : chaque couche est
+   dessinée deux fois (à -W et à 0) puis décalée de "phase mod W". */
+const BELT_W = 1200;
+const BELT_LAYERS = [
+  { count: 70, r: [0.6, 1.2], fill: '#8D9AB3', opacity: 0.35, speed: 10 },  // poussière lointaine
+  { count: 40, r: [1.2, 2.2], fill: '#9AA3B5', opacity: 0.55, speed: 22 },  // cailloux
+  { count: 14, r: [3, 7],     fill: '#A39A8E', opacity: 0.9,  speed: 48, rocks: true }, // rochers
+];
+const rand = (a, b) => a + Math.random() * (b - a);
+// y suit une vague douce, périodique sur W pour que la boucle soit invisible
+const beltY = (x) => 40 + Math.sin((x / BELT_W) * Math.PI * 2) * 12 + rand(-14, 14);
+
+function rock(x, y, r) {
+  const pts = Array.from({ length: 7 }, (_, i) => {
+    const a = (i / 7) * Math.PI * 2, d = r * rand(0.7, 1.15);
+    return `${(x + Math.cos(a) * d).toFixed(1)},${(y + Math.sin(a) * d).toFixed(1)}`;
+  }).join(' ');
+  const dur = rand(4, 12).toFixed(1), dir = Math.random() < 0.5 ? 'normal' : 'reverse';
+  return `<polygon class="belt-rock" points="${pts}" style="animation-duration:${dur}s;animation-direction:${dir}"/>`;
+}
+
+function makeBelt() {
+  const layers = BELT_LAYERS.map((L) => {
+    let shapes = '';
+    for (let i = 0; i < L.count; i++) {
+      const x = rand(0, BELT_W), y = beltY(x), r = rand(...L.r);
+      shapes += L.rocks ? rock(x, y, r) : `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r.toFixed(1)}"/>`;
+    }
+    return `<g class="belt-layer" fill="${L.fill}" opacity="${L.opacity}">
+      <g transform="translate(${-BELT_W} 0)">${shapes}</g><g>${shapes}</g></g>`;
+  }).join('');
+
+  const wrap = document.createElement('div');
+  // "slice" : jamais étiré, les points restent ronds quelle que soit la largeur
+  wrap.innerHTML = `<svg viewBox="0 0 ${BELT_W} 80" preserveAspectRatio="xMinYMid slice">${layers}</svg>`;
+  const svg = wrap.firstElementChild;
+  if (reduced) return svg;
+
+  const groups = [...svg.querySelectorAll('.belt-layer')];
+  const phase = BELT_LAYERS.map(() => rand(0, BELT_W));
+  let visible = false;
+  new IntersectionObserver(([e]) => { visible = e.isIntersecting; }).observe(svg);
+  gsap.ticker.add((time, deltaTime) => {
+    if (!visible) return;
+    const dt = Math.min(deltaTime, 64) / 1000;
+    groups.forEach((g, i) => {
+      phase[i] = (phase[i] + BELT_LAYERS[i].speed * dt) % BELT_W;
+      g.setAttribute('transform', `translate(${phase[i].toFixed(1)} 0)`);
+    });
+  });
+  return svg;
 }
 
 /* Les étapes du voyage : section → corps célestes */
@@ -189,7 +234,7 @@ function makeBody(name, uid) {
 
   if (name === 'belt') {
     el.setAttribute('aria-hidden', 'true');
-    el.innerHTML = belt();
+    el.appendChild(makeBelt());
     return el;
   }
 
@@ -386,7 +431,7 @@ function makeCard(starfield) {
       facts.appendChild(li);
     });
     const nextBtn = $('.planet-card-next');
-    nextBtn.textContent = next ? `${t('planet.next')} ${t('planet.' + next + '.name')} →` : t('planet.back');
+    nextBtn.textContent = next ? `${t('planet.next')} ${t('planet.' + next + '.name')}` : t('planet.back');
     nextBtn.onclick = () => {
       close(false);
       if (!next) {

@@ -84,8 +84,14 @@ main { overflow-x: clip; }
 .solar-body[data-body="saturn"]  { --size: clamp(200px, 22vw, 300px); top: var(--s-12); right: calc(50% - 50vw + 3vw); }
 .solar-body[data-body="jupiter"] { --size: clamp(280px, 34vw, 480px); top: 0; right: calc(50% - 50vw - var(--size) * 0.36); }
 .solar-body[data-body="jupiter"] .solar-label { text-align: left; padding-left: 12%; }
-.solar-body[data-body="belt"]    { left: calc(50% - 50vw); width: 100vw; top: var(--s-4); fill: var(--gris-lunaire); opacity: 0.35; }
-.solar-body[data-body="belt"] svg { height: 60px; }
+.solar-body[data-body="belt"]    { left: calc(50% - 50vw); width: 100vw; top: var(--s-4); z-index: -1; } /* décor non cliquable : derrière le texte */
+.solar-body[data-body="belt"] svg { height: 80px; }
+/* Chaque rocher tourne sur lui-même (durée et sens tirés au hasard dans solar.js) */
+.belt-rock { transform-box: fill-box; transform-origin: center; }
+@media (prefers-reduced-motion: no-preference) {
+  .belt-rock { animation: rock-spin 8s linear infinite; }
+}
+@keyframes rock-spin { to { transform: rotate(360deg); } }
 .solar-body[data-body="mars"]    { --size: clamp(110px, 12vw, 170px); top: var(--s-8); right: calc(50% - 50vw + 6vw); }
 .solar-body[data-body="earth"]   { --size: clamp(150px, 16vw, 216px); top: var(--s-12); right: calc(50% - 50vw + 9vw); }
 /* La Lune : en orbite autour du centre de la Terre (position calculée dans solar.js).
