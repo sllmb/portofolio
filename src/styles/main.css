@@ -87,7 +87,16 @@ main { overflow-x: clip; }
 .solar-body[data-body="belt"]    { left: calc(50% - 50vw); width: 100vw; top: var(--s-4); fill: var(--gris-lunaire); opacity: 0.35; }
 .solar-body[data-body="belt"] svg { height: 60px; }
 .solar-body[data-body="mars"]    { --size: clamp(110px, 12vw, 170px); top: var(--s-8); right: calc(50% - 50vw + 6vw); }
-.solar-body[data-body="earth"]   { --size: clamp(190px, 21vw, 280px); top: var(--s-12); right: calc(50% - 50vw + 4vw); }
+.solar-body[data-body="earth"]   { --size: clamp(150px, 16vw, 216px); top: var(--s-12); right: calc(50% - 50vw + 9vw); }
+/* La Lune : en orbite autour du centre de la Terre (position calculée dans solar.js).
+   Zone de clic d'au moins 44 px, même si le dessin est plus petit. */
+.solar-body[data-body="earth"] > .solar-planet:not(.solar-moon) { position: relative; z-index: 1; }
+.solar-planet.solar-moon {
+  position: absolute; left: 50%; top: calc(var(--size) / 2); z-index: 2;
+  width: max(44px, calc(var(--size) * 0.24)); padding: calc(var(--size) * 0.03);
+  border-radius: 50%;
+}
+.solar-planet.solar-moon.is-behind { z-index: 0; }
 .solar-body[data-body="venus"]   { --size: clamp(84px, 9vw, 130px);   top: var(--s-12); right: calc(50% - 50vw + 24vw); }
 .solar-body[data-body="mercury"] { --size: clamp(46px, 4.5vw, 64px);  top: 34%; right: calc(50% - 50vw + 9vw); }
 
@@ -169,7 +178,7 @@ main { overflow-x: clip; }
   .solar-label { display: none; }
   /* Mercure partagerait la colonne du formulaire : on la garde pour les grands écrans */
   .solar-body[data-body="mercury"] { display: none; }
-  .solar-body[data-body="earth"]   { --size: 150px; top: 18px;  right: -36px; }
+  .solar-body[data-body="earth"]   { --size: 112px; top: 22px;  right: 14px; }
   .solar-body[data-body="venus"]   { --size: 72px;  top: 18px;  right: 12px; }
   .solar-body[data-body="sun"]     { --size: 300px; }
   /* Sur mobile, la fiche devient un panneau en bas de l'écran (zone du pouce) */

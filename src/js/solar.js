@@ -6,7 +6,8 @@
       en unités astronomiques (UA) : le compteur du voyage
    2. Une parallaxe douce (la planète glisse plus lentement que le texte)
    3. La lumière du jour (.daylight) qui monte au fil du défilement
-   4. Chaque planète tourne sur elle-même, à sa vitesse (Vénus à l'envers)
+   4. Chaque planète tourne sur elle-même, à sa vitesse (Vénus à l'envers),
+      les anneaux de Saturne circulent, la Lune tourne autour de la Terre
    5. Des planètes interactives : survol (elle s'illumine), glisser
       (on pousse sa surface), clic (une fiche avec deux faits vrais
       et un bouton « Prochaine escale » qui saute en warp)
@@ -54,7 +55,8 @@ const DRAW = {
     <ellipse cx="146" cy="120" rx="10" ry="3" fill="#C9D6F2" opacity=".55"/>
     <ellipse cx="40" cy="96" rx="12" ry="5" fill="#2C4580" opacity=".7"/>`),
 
-  /* Saturne : anneau arrière, planète (surface tournante), puis l'avant de l'anneau */
+  /* Saturne : anneau arrière, planète (surface tournante), puis l'avant de l'anneau.
+     Les particules des anneaux circulent : l'intérieur va plus vite (Kepler). */
   saturn: (uid) => `
     <svg viewBox="0 0 280 200">
       <defs>
@@ -64,6 +66,8 @@ const DRAW = {
       <g transform="rotate(-14 140 100)">
         <ellipse cx="140" cy="100" rx="128" ry="30" fill="none" stroke="#D8C08A" stroke-width="10" opacity=".45"/>
         <ellipse cx="140" cy="100" rx="104" ry="23" fill="none" stroke="#8E7A55" stroke-width="5" opacity=".6"/>
+        <ellipse class="ring-flow" data-rate="1" cx="140" cy="100" rx="128" ry="30" fill="none" stroke="#F1E2BC" stroke-width="7" stroke-dasharray="2 7 1 11 3 6 1.5 9" opacity=".55"/>
+        <ellipse class="ring-flow" data-rate="1.6" cx="140" cy="100" rx="104" ry="23" fill="none" stroke="#C9B48A" stroke-width="3.5" stroke-dasharray="1.5 6 3 8 1 5" opacity=".7"/>
       </g>
       <circle cx="140" cy="100" r="62" fill="#C2A46C"/>
       <g clip-path="url(#${uid})">
@@ -78,6 +82,8 @@ const DRAW = {
       <g transform="rotate(-14 140 100)" clip-path="url(#${uid}-front)">
         <ellipse cx="140" cy="100" rx="128" ry="30" fill="none" stroke="#D8C08A" stroke-width="10" opacity=".55"/>
         <ellipse cx="140" cy="100" rx="104" ry="23" fill="none" stroke="#8E7A55" stroke-width="5" opacity=".7"/>
+        <ellipse class="ring-flow" data-rate="1" cx="140" cy="100" rx="128" ry="30" fill="none" stroke="#F1E2BC" stroke-width="7" stroke-dasharray="2 7 1 11 3 6 1.5 9" opacity=".55"/>
+        <ellipse class="ring-flow" data-rate="1.6" cx="140" cy="100" rx="104" ry="23" fill="none" stroke="#C9B48A" stroke-width="3.5" stroke-dasharray="1.5 6 3 8 1 5" opacity=".7"/>
       </g>
     </svg>`,
 
@@ -102,30 +108,22 @@ const DRAW = {
 
   /* La Terre : l'Afrique (avec Dakar en cyan) et les Amériques passent tour à
      tour. Le point Dakar est dans une 2e surface, au-dessus de l'ombre, pour
-     rester lumineux. La Lune ne tourne pas : elle montre toujours la même face. */
-  earth: (uid) => `
-    <svg viewBox="0 0 260 200">
-      <defs><clipPath id="${uid}"><circle cx="100" cy="100" r="80"/></clipPath>
-            <clipPath id="${uid}-moon"><circle cx="226" cy="54" r="16"/></clipPath></defs>
-      <circle cx="100" cy="100" r="80" fill="#2F6FB0"/>
-      <g clip-path="url(#${uid})">
-        ${surface(`
-          <path d="M86 64 q22 -8 40 6 q10 14 4 30 q-6 18 -18 34 q-8 12 -14 4 q-4 -16 -10 -28 q-14 -4 -16 -22 q0 -16 14 -24z" fill="#5C9A5E"/>
-          <path d="M60 52 q14 -10 26 -4 q-4 10 -18 12z" fill="#5C9A5E" opacity=".9"/>
-          <path d="M8 46 q18 -6 26 6 q-2 14 -12 20 q4 10 10 22 q6 18 0 34 q-8 8 -12 -6 q-6 -20 -10 -34 q-10 -10 -8 -24 q0 -12 6 -18z" fill="#5C9A5E"/>
-          <ellipse cx="96" cy="58" rx="46" ry="5" fill="#fff" opacity=".22"/>
-          <ellipse cx="160" cy="150" rx="40" ry="5" fill="#fff" opacity=".18"/>`)}
-        <circle cx="78" cy="70" r="104" fill="#05070D" opacity=".42"/>
-        ${surface(`
-          <circle cx="82" cy="84" r="4" fill="#76D7E8"/>
-          <circle cx="82" cy="84" r="9" fill="none" stroke="#76D7E8" stroke-width="1.2" opacity=".6"/>`)}
-      </g>
-      <circle cx="226" cy="54" r="16" fill="#B9BCC4"/>
-      <g clip-path="url(#${uid}-moon)">
-        <circle cx="221" cy="50" r="4" fill="#8F939C"/><circle cx="232" cy="60" r="3" fill="#8F939C"/>
-        <circle cx="220" cy="44" r="22" fill="#05070D" opacity=".45"/>
-      </g>
-    </svg>`,
+     rester lumineux. La Lune est un bouton à part qui tourne autour (voir orbit). */
+  earth: (uid) => globe(uid, '#2F6FB0', `
+    <path d="M86 64 q22 -8 40 6 q10 14 4 30 q-6 18 -18 34 q-8 12 -14 4 q-4 -16 -10 -28 q-14 -4 -16 -22 q0 -16 14 -24z" fill="#5C9A5E"/>
+    <path d="M60 52 q14 -10 26 -4 q-4 10 -18 12z" fill="#5C9A5E" opacity=".9"/>
+    <path d="M8 46 q18 -6 26 6 q-2 14 -12 20 q4 10 10 22 q6 18 0 34 q-8 8 -12 -6 q-6 -20 -10 -34 q-10 -10 -8 -24 q0 -12 6 -18z" fill="#5C9A5E"/>
+    <ellipse cx="96" cy="58" rx="46" ry="5" fill="#fff" opacity=".22"/>
+    <ellipse cx="160" cy="150" rx="40" ry="5" fill="#fff" opacity=".18"/>`, `
+    <circle cx="82" cy="84" r="4" fill="#76D7E8"/>
+    <circle cx="82" cy="84" r="9" fill="none" stroke="#76D7E8" stroke-width="1.2" opacity=".6"/>`),
+
+  /* La Lune : grise, cratérisée. Elle tourne sur elle-même exactement une fois
+     par tour de la Terre (rotation synchrone) : on voit toujours la même face. */
+  moon: (uid) => globe(uid, '#B9BCC4', `
+    <circle cx="70" cy="80" r="16" fill="#8F939C"/><circle cx="120" cy="120" r="12" fill="#8F939C"/>
+    <circle cx="104" cy="62" r="8" fill="#9EA2AA"/><circle cx="150" cy="86" r="10" fill="#8F939C"/>
+    <circle cx="30" cy="124" r="11" fill="#9EA2AA"/><circle cx="178" cy="132" r="7" fill="#8F939C"/>`),
 
   /* Vénus : voile de nuages crème (elle tourne à l'envers) */
   venus: (uid) => globe(uid, '#E3C08A', `
@@ -145,7 +143,7 @@ const DRAW = {
    visibles : Jupiter 9 h 56 (la plus rapide) … Vénus 243 jours, et à
    l'envers (signe négatif) : c'est la seule planète qui tourne dans
    l'autre sens. */
-const TURN = { jupiter: 16, saturn: 17, neptune: 24, earth: 34, mars: 35, mercury: 90, venus: -140 };
+const TURN = { jupiter: 16, saturn: 17, neptune: 24, earth: 34, mars: 35, mercury: 90, venus: -140, moon: 48 };
 
 /* La ceinture d'astéroïdes, entre Jupiter et Mars : une bande de points */
 function belt() {
@@ -170,7 +168,19 @@ const ROUTE = [
 
 /* L'ordre des escales : chaque fiche propose la suivante.
    Le Soleil boucle sur le départ (le hero). */
-const STOPS = ['neptune', 'saturn', 'jupiter', 'mars', 'earth', 'venus', 'mercury', 'sun'];
+const STOPS = ['neptune', 'saturn', 'jupiter', 'mars', 'earth', 'moon', 'venus', 'mercury', 'sun'];
+
+function planetButton(name, uid) {
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'solar-planet' + (name === 'moon' ? ' solar-moon' : '');
+  btn.dataset.planet = name;
+  btn.dataset.ariaKey = 'planet.' + name + '.open';
+  btn.setAttribute('aria-label', t('planet.' + name + '.open'));
+  btn.setAttribute('aria-expanded', 'false');
+  btn.innerHTML = name === 'sun' ? '<div class="sun-disc"></div>' : DRAW[name](uid);
+  return btn;
+}
 
 function makeBody(name, uid) {
   const el = document.createElement('div');
@@ -184,14 +194,9 @@ function makeBody(name, uid) {
   }
 
   // La planète est un vrai bouton : clavier, lecteurs d'écran, focus visible
-  const btn = document.createElement('button');
-  btn.type = 'button';
-  btn.className = 'solar-planet';
-  btn.dataset.ariaKey = 'planet.' + name + '.open';
-  btn.setAttribute('aria-label', t('planet.' + name + '.open'));
-  btn.setAttribute('aria-expanded', 'false');
-  btn.innerHTML = name === 'sun' ? '<div class="sun-disc"></div>' : DRAW[name](uid);
-  el.appendChild(btn);
+  el.appendChild(planetButton(name, uid));
+  // La Lune accompagne la Terre : même corps, donc même parallaxe
+  if (name === 'earth') el.appendChild(planetButton('moon', uid + '-moon'));
 
   if (name !== 'sun') {
     // L'étiquette : nom + distance au Soleil, traduite comme le reste du site
@@ -226,16 +231,42 @@ function tick(time, deltaTime) {
   }
 }
 
+/* L'orbite de la Lune : une ellipse inclinée autour du centre de la Terre.
+   Devant la Terre sur la moitié basse du trajet, derrière sur la moitié haute
+   (la classe .is-behind la fait passer sous le bouton de la Terre). */
+function makeOrbit(moon) {
+  const body = moon.closest('.solar-body');
+  const TILT = -12 * Math.PI / 180;
+  const size = () => body.querySelector('.solar-planet').getBoundingClientRect().width;
+  const fn = (turns) => {
+    const a = turns * 2 * Math.PI;
+    const w = size();
+    const x0 = Math.cos(a) * w * 0.66, y0 = Math.sin(a) * w * 0.17;
+    const x = x0 * Math.cos(TILT) - y0 * Math.sin(TILT);
+    const y = x0 * Math.sin(TILT) + y0 * Math.cos(TILT);
+    moon.style.transform = `translate(calc(-50% + ${x.toFixed(1)}px), calc(-50% + ${y.toFixed(1)}px))`;
+    moon.classList.toggle('is-behind', Math.sin(a) < 0);
+  };
+  fn.rx = () => size() * 0.66;
+  return fn;
+}
+
 function makeSpinnable(btn, name, onClick) {
   const art = btn.firstElementChild;
   const surfaces = [...art.querySelectorAll('.surface')];
   const P = Number(surfaces[0].dataset.period);
   const vbWidth = art.viewBox.baseVal.width;
+  const rings = [...art.querySelectorAll('.ring-flow')];
+  const orbit = name === 'moon' ? makeOrbit(btn) : null;
   const s = {
     P, turn: TURN[name], phase: Math.random() * P, boost: 0, visible: false, dragging: false,
     apply() {
       const x = ((s.phase % P) + P) % P;
       surfaces.forEach((g) => g.setAttribute('transform', `translate(${x.toFixed(2)} 0)`));
+      // Anneaux : les particules avancent avec la rotation de la planète
+      rings.forEach((r) => r.setAttribute('stroke-dashoffset', (-s.phase * r.dataset.rate).toFixed(1)));
+      // Lune : un tour d'orbite = un tour sur elle-même (même phase)
+      if (orbit) orbit(s.phase / P);
     },
   };
   s.apply();
@@ -246,7 +277,8 @@ function makeSpinnable(btn, name, onClick) {
   new IntersectionObserver(([entry]) => { s.visible = entry.isIntersecting; }).observe(btn);
 
   // Unités du dessin par pixel à l'écran : la surface suit exactement le doigt
-  const unitsPerPx = () => vbWidth / art.getBoundingClientRect().width;
+  const unitsPerPx = () => (orbit ? P / (2 * Math.PI * orbit.rx())
+                                  : vbWidth / art.getBoundingClientRect().width);
   let drag = null;
 
   btn.addEventListener('pointerdown', (e) => {
@@ -342,7 +374,7 @@ function makeCard(starfield) {
     current = btn;
     openedAt = scrollY;
     // Prochaine escale visible (Mercure et Neptune sont masquées sur petit écran)
-    const visible = (n) => document.querySelector(`.solar-body[data-body="${n}"]`)?.getClientRects().length > 0;
+    const visible = (n) => document.querySelector(`.solar-planet[data-planet="${n}"]`)?.getClientRects().length > 0;
     const next = STOPS.slice(STOPS.indexOf(name) + 1).find(visible);
     $('.planet-card-title').textContent = t('planet.' + name + '.name');
     $('.planet-card-meta').textContent = t('planet.' + name + '.meta');
@@ -365,12 +397,12 @@ function makeCard(starfield) {
         });
         return;
       }
-      const target = document.querySelector(`.solar-body[data-body="${next}"]`);
+      const target = document.querySelector(`.solar-planet[data-planet="${next}"]`);
       const section = target.closest('section');
-      // Escale dans la même section (Vénus → Mercure → Soleil) : on vise la planète
-      const dest = section.contains(btn) ? target : section;
+      // Escale dans la même section (Terre → Lune, Vénus → Mercure → Soleil) : on vise la planète
+      const dest = section.contains(btn) ? target.closest('.solar-body') : section;
       // À l'arrivée, le focus va sur la planète suivante : on peut continuer au clavier
-      starfield.warpTo(dest, () => target.querySelector('.solar-planet').focus({ preventScroll: true }));
+      starfield.warpTo(dest, () => target.focus({ preventScroll: true }));
     };
     $('.planet-card-close').setAttribute('aria-label', t('planet.close'));
 
@@ -426,12 +458,12 @@ export function initSolar(starfield) {
       const body = makeBody(name, `solar-${name}-${i}`);
       host.appendChild(body);
 
-      const btn = body.querySelector('.solar-planet');
-      if (btn) {
-        const toggle = () => (card.isOpenFor(btn) ? card.close() : card.open(name, btn));
-        if (name === 'sun') btn.addEventListener('click', toggle); // le Soleil ne tourne pas
-        else makeSpinnable(btn, name, toggle);
-      }
+      body.querySelectorAll('.solar-planet').forEach((btn) => {
+        const planet = btn.dataset.planet;
+        const toggle = () => (card.isOpenFor(btn) ? card.close() : card.open(planet, btn));
+        if (planet === 'sun') btn.addEventListener('click', toggle); // le Soleil ne tourne pas
+        else makeSpinnable(btn, planet, toggle);
+      });
 
       if (reduced) return; // sans parallaxe : la planète reste à sa place
 

@@ -131,5 +131,10 @@
   "planet.earth.open": "La Terre : ouvrir la fiche (flèches gauche et droite pour la faire tourner)",
   "planet.venus.open": "Vénus : ouvrir la fiche (flèches gauche et droite pour la faire tourner)",
   "planet.mercury.open": "Mercure : ouvrir la fiche (flèches gauche et droite pour la faire tourner)",
-  "planet.sun.open": "Le Soleil : ouvrir la fiche"
+  "planet.sun.open": "Le Soleil : ouvrir la fiche",
+  "planet.moon.name": "La Lune",
+  "planet.moon.meta": "384 400 KM DE LA TERRE",
+  "planet.moon.f1": "Elle tourne sur elle-même en 27,3 jours, exactement le temps d'un tour de la Terre : on voit donc toujours la même face.",
+  "planet.moon.f2": "Elle s'éloigne de la Terre d'environ 3,8 cm par an.",
+  "planet.moon.open": "La Lune : ouvrir la fiche (flèches gauche et droite pour la faire tourner)"
 }
