@@ -1,5 +1,19 @@
 {
   "a11y.skip": "Skip to content",
+  "a11y.nav": "Main navigation",
+  "a11y.lang": "Language",
+  "a11y.menu": "Menu",
+  "a11y.hero": "Introduction",
+  "a11y.projects": "Projects",
+
+  "meta.title": "Salamba Diène — Developer in exploration",
+  "meta.desc": "Space-themed portfolio of a creative developer: missions, journey and skills. Come aboard.",
+
+  "preloader.systems": "SYSTEMS",
+  "preloader.nav": "NAVIGATION",
+  "preloader.lang": "LANGUAGE",
+  "preloader.launch": "LAUNCH",
+  "preloader.imminent": "IMMINENT",
 
   "nav.about": "About",
   "nav.skills": "Skills",
@@ -55,8 +69,8 @@
 
   "contact.eyebrow": "06 · LANDING",
   "contact.title": "End of transmission. Your move.",
-  "contact.name": "Salamba Diène",
-  "contact.email": "salambadiene@esp.sn",
+  "contact.name": "YOUR NAME",
+  "contact.email": "YOUR EMAIL",
   "contact.msg": "YOUR MESSAGE",
   "contact.send": "Transmit",
   "contact.sending": "TRANSMISSION IN PROGRESS…",

@@ -16,7 +16,7 @@ npm run preview  # tester la version de production en local
 
 ## À personnaliser en priorité
 
-1. **Votre nom** : dans `index.html` (`<h1 class="hero-name">`, `<title>`, footer) et le logo `V·N`.
+1. **Votre nom** : dans `index.html` (`<h1 class="hero-name">`, footer), `meta.title` dans les fichiers i18n, et le logo `S·D` (initiales).
 2. **Vos textes** : `src/i18n/fr.json` et `src/i18n/en.json` — tout le contenu y est centralisé.
 3. **Le formulaire** : créez une clé gratuite sur [web3forms.com](https://web3forms.com) et remplacez `VOTRE_CLE_WEB3FORMS` dans `index.html`.
 4. **Vos liens** : GitHub, LinkedIn, email (sections Missions et Contact).

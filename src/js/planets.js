@@ -60,11 +60,14 @@ const DRAW = {
     </svg>`,
 };
 
+/* Le satellite : un petit point cyan en orbite (rotation CSS .orbit) */
+const SATELLITE = `<g class="orbit"><circle cx="70" cy="10" r="2.2" fill="#76D7E8" opacity=".7"/></g>`;
+
 export function initPlanets() {
   document.querySelectorAll('.mission-planet').forEach((slot, i) => {
     const type = slot.dataset.planet;
     // L'identifiant unique évite les collisions de clipPath
     // si deux missions utilisent le même type de planète
-    if (DRAW[type]) slot.innerHTML = DRAW[type]('planet-clip-' + i);
+    if (DRAW[type]) slot.innerHTML = DRAW[type]('planet-clip-' + i).replace('</svg>', SATELLITE + '</svg>');
   });
 }

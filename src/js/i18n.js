@@ -31,6 +31,17 @@ export function applyLang(lang) {
     if (value !== undefined) el.textContent = value;
   });
 
+  // Les libellés invisibles (lecteurs d'écran) : data-i18n-aria="clé"
+  document.querySelectorAll('[data-i18n-aria]').forEach((el) => {
+    const value = dict[el.dataset.i18nAria];
+    if (value !== undefined) el.setAttribute('aria-label', value);
+  });
+
+  // Titre de l'onglet + description (moteurs de recherche, partages)
+  if (dict['meta.title']) document.title = dict['meta.title'];
+  const desc = document.querySelector('meta[name="description"]');
+  if (desc && dict['meta.desc']) desc.setAttribute('content', dict['meta.desc']);
+
   // Mettre à jour l'état visuel du sélecteur FR/EN
   document.querySelectorAll('.lang button').forEach((btn) => {
     btn.classList.toggle('active', btn.dataset.lang === lang);

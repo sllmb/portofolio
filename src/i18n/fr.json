@@ -1,5 +1,19 @@
 {
   "a11y.skip": "Aller au contenu",
+  "a11y.nav": "Navigation principale",
+  "a11y.lang": "Langue",
+  "a11y.menu": "Menu",
+  "a11y.hero": "Introduction",
+  "a11y.projects": "Projets",
+
+  "meta.title": "Salamba Diène — Développeur en exploration",
+  "meta.desc": "Portfolio spatial d'un développeur créatif : missions, parcours et compétences. Embarquez pour le voyage.",
+
+  "preloader.systems": "SYSTÈMES",
+  "preloader.nav": "NAVIGATION",
+  "preloader.lang": "LANGUE",
+  "preloader.launch": "DÉCOLLAGE",
+  "preloader.imminent": "IMMINENT",
 
   "nav.about": "À propos",
   "nav.skills": "Compétences",
@@ -55,8 +69,8 @@
 
   "contact.eyebrow": "06 · ATTERRISSAGE",
   "contact.title": "Fin de la transmission. À vous de jouer.",
-  "contact.name": "Salamba Diène",
-  "contact.email": "salambadiene@esp.sn",
+  "contact.name": "VOTRE NOM",
+  "contact.email": "VOTRE EMAIL",
   "contact.msg": "VOTRE MESSAGE",
   "contact.send": "Transmettre",
   "contact.sending": "TRANSMISSION EN COURS…",

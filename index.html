@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Votre Nom — Développeur en exploration</title>
+  <title>Salamba Diène — Développeur en exploration</title>
   <meta name="description" content="Portfolio spatial d'un développeur créatif : missions, parcours et compétences. Embarquez pour le voyage." />
 
   <!-- Marqueur JS : permet au CSS de savoir que JavaScript est actif.
@@ -28,11 +28,11 @@
   <!-- ÉTAPE E : la nébuleuse vivante (pur CSS) -->
   <div class="nebula" aria-hidden="true"></div>
 
-  <a class="skip-link" href="#missions" data-i18n="a11y.skip">Aller au contenu</a>
+  <a class="skip-link" href="#contenu" data-i18n="a11y.skip">Aller au contenu</a>
 
   <header class="nav" id="nav">
-    <a class="nav-logo mono" href="#hero">V·N</a>
-    <nav class="nav-links" aria-label="Navigation principale">
+    <a class="nav-logo mono" href="#hero">S·D</a>
+    <nav class="nav-links" aria-label="Navigation principale" data-i18n-aria="a11y.nav">
       <a href="#apropos" data-i18n="nav.about">À propos</a>
       <a href="#competences" data-i18n="nav.skills">Compétences</a>
       <a href="#missions" data-i18n="nav.missions">Missions</a>
@@ -40,34 +40,37 @@
       <a href="#contact" data-i18n="nav.contact">Contact</a>
     </nav>
     <div class="nav-right">
-      <div class="lang mono" role="group" aria-label="Langue">
+      <div class="lang mono" role="group" aria-label="Langue" data-i18n-aria="a11y.lang">
         <button type="button" data-lang="fr" class="active">FR</button><span>/</span><button type="button" data-lang="en">EN</button>
       </div>
-      <button class="burger" id="burger" aria-label="Menu" aria-expanded="false">
+      <button class="burger" id="burger" aria-label="Menu" data-i18n-aria="a11y.menu" aria-expanded="false">
         <span></span><span></span>
       </button>
     </div>
   </header>
 
-  <main>
+  <main id="contenu" tabindex="-1">
 
     <!-- ===================== 01 · DÉCOLLAGE ===================== -->
-    <section class="hero" id="hero" aria-label="Introduction">
-      <!-- La constellation au-dessus du nom : tracée en CSS via stroke-dashoffset -->
-      <svg class="constellation" viewBox="0 0 320 80" aria-hidden="true">
-        <polyline points="20,60 80,25 150,45 220,15 300,50" fill="none" stroke="currentColor" stroke-width="0.8" />
-        <circle cx="20" cy="60" r="2.6" /><circle cx="80" cy="25" r="2.6" />
-        <circle cx="150" cy="45" r="2.6" /><circle cx="220" cy="15" r="2.6" />
-        <circle cx="300" cy="50" r="2.6" />
-      </svg>
-      <h1 class="hero-name">VOTRE NOM</h1>
-      <p class="hero-title mono" data-i18n="hero.title">DÉVELOPPEUR EN EXPLORATION</p>
-      <a class="btn btn-primary hero-cta" href="#missions" data-i18n="hero.cta">Commencer le voyage</a>
+    <section class="hero" id="hero" aria-label="Introduction" data-i18n-aria="a11y.hero">
+      <!-- hero-inner : le bloc qui s'éloigne en parallax au scroll (fx.js) -->
+      <div class="hero-inner">
+        <!-- La constellation au-dessus du nom : tracée en CSS via stroke-dashoffset -->
+        <svg class="constellation" viewBox="0 0 320 80" aria-hidden="true">
+          <polyline points="20,60 80,25 150,45 220,15 300,50" fill="none" stroke="currentColor" stroke-width="0.8" />
+          <circle cx="20" cy="60" r="2.6" /><circle cx="80" cy="25" r="2.6" />
+          <circle cx="150" cy="45" r="2.6" /><circle cx="220" cy="15" r="2.6" />
+          <circle cx="300" cy="50" r="2.6" />
+        </svg>
+        <h1 class="hero-name">SALAMBA DIÈNE</h1>
+        <p class="hero-title mono" data-i18n="hero.title">DÉVELOPPEUR EN EXPLORATION</p>
+        <a class="btn btn-primary hero-cta" href="#missions" data-i18n="hero.cta">Commencer le voyage</a>
+      </div>
       <div class="scroll-hint mono" data-i18n="hero.scroll">DÉFILER POUR EMBARQUER</div>
     </section>
 
     <!-- ===================== 02 · NÉBULEUSE ===================== -->
-    <section class="section" id="apropos" aria-label="À propos">
+    <section class="section" id="apropos" aria-label="À propos" data-i18n-aria="nav.about">
       <p class="eyebrow mono" data-i18n="about.eyebrow">02 · NÉBULEUSE</p>
       <h2 data-split data-i18n="about.title">À propos</h2>
       <div class="prose" data-reveal-group>
@@ -78,7 +81,7 @@
     </section>
 
     <!-- ===================== 03 · CONSTELLATION ===================== -->
-    <section class="section" id="competences" aria-label="Compétences">
+    <section class="section" id="competences" aria-label="Compétences" data-i18n-aria="nav.skills">
       <p class="eyebrow mono" data-i18n="skills.eyebrow">03 · CONSTELLATION</p>
       <h2 data-split data-i18n="skills.title">Compétences</h2>
       <div class="constellations" data-reveal-group>
@@ -113,7 +116,7 @@
     </section>
 
     <!-- ===================== 04 · MISSIONS ===================== -->
-    <section class="section" id="missions" aria-label="Projets">
+    <section class="section" id="missions" aria-label="Projets" data-i18n-aria="a11y.projects">
       <p class="eyebrow mono" data-i18n="missions.eyebrow">04 · MISSIONS</p>
       <h2 data-split data-i18n="missions.title">Journaux de mission</h2>
 
@@ -164,7 +167,7 @@
     </section>
 
     <!-- ===================== 05 · ORBITE ===================== -->
-    <section class="section" id="parcours" aria-label="Parcours">
+    <section class="section" id="parcours" aria-label="Parcours" data-i18n-aria="nav.journey">
       <p class="eyebrow mono" data-i18n="journey.eyebrow">05 · ORBITE</p>
       <h2 data-split data-i18n="journey.title">Parcours</h2>
       <div class="timeline">
@@ -199,7 +202,7 @@
     </section>
 
     <!-- ===================== 06 · ATTERRISSAGE ===================== -->
-    <section class="section contact" id="contact" aria-label="Contact">
+    <section class="section contact" id="contact" aria-label="Contact" data-i18n-aria="nav.contact">
       <p class="eyebrow mono" data-i18n="contact.eyebrow">06 · ATTERRISSAGE</p>
       <h2 data-split data-i18n="contact.title">Fin de la transmission. À vous de jouer.</h2>
 
@@ -225,14 +228,14 @@
       <div class="socials mono">
         <a href="https://github.com/" target="_blank" rel="noopener">GITHUB ↗</a>
         <a href="https://www.linkedin.com/" target="_blank" rel="noopener">LINKEDIN ↗</a>
-        <a href="mailto:vous@exemple.com">EMAIL ↗</a>
+        <a href="mailto:salambadiene@esp.sn">EMAIL ↗</a>
       </div>
     </section>
   </main>
 
   <!-- ===================== STATION (FOOTER) ===================== -->
   <footer class="footer mono">
-    <span>© 2026 — VOTRE NOM</span>
+    <span>© 2026 — SALAMBA DIÈNE</span>
     <span class="coords">14.7167° N, 17.4677° W — DAKAR</span>
   </footer>
 

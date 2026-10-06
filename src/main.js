@@ -18,6 +18,7 @@ import { splitTitles, initReveals, initLines, initSteps, refresh } from './js/re
 import { initNav } from './js/nav.js';
 import { initForm } from './js/form.js';
 import { initPlanets } from './js/planets.js';
+import { initFx, decodeHeroRole } from './js/fx.js';
 
 // 1. Langue : appliquée immédiatement pour éviter tout "flash" de mauvais texte
 const lang = detectLang();
@@ -29,6 +30,7 @@ const starfield = initStarfield();
 // 3. Préloader → séquence d'ouverture
 runPreloader(lang).then(() => {
   starfield.start();
+  decodeHeroRole();
 });
 
 // 4. Le reste du site (n'attend pas le préloader : tout est prêt sous l'overlay)
@@ -39,6 +41,7 @@ initSteps();
 initNav(starfield);
 initForm();
 initPlanets();
+initFx();
 
 // 5. Changement de langue : on redécoupe les titres (le texte a changé)
 //    et on recalcule les positions de scroll (les hauteurs ont pu bouger)

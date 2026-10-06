@@ -7,6 +7,8 @@
    - 2e visite dans la même session → version express (300ms)
    - prefers-reduced-motion → aucun délai du tout
    ============================================================ */
+import { t } from './i18n.js';
+
 export function runPreloader(lang) {
   const overlay = document.getElementById('preloader');
   const linesEl = overlay.querySelector('.preloader-lines');
@@ -17,11 +19,13 @@ export function runPreloader(lang) {
   sessionStorage.setItem('visited', '1');
 
   // La fiction : un check-up de systèmes avant le décollage
+  // Les points complètent chaque libellé à 16 caractères (alignement console)
+  const line = (key, value) => t(key).padEnd(16, '.') + `<span class="ok">${value}</span>`;
   const LINES = [
-    'SYSTÈMES........<span class="ok">OK</span>',
-    'NAVIGATION......<span class="ok">OK</span>',
-    `LANGUE..........<span class="ok">${lang.toUpperCase()}</span>`,
-    'DÉCOLLAGE.......<span class="ok">IMMINENT</span>',
+    line('preloader.systems', 'OK'),
+    line('preloader.nav', 'OK'),
+    line('preloader.lang', lang.toUpperCase()),
+    line('preloader.launch', t('preloader.imminent')),
   ];
 
   return new Promise((resolve) => {
@@ -37,7 +41,9 @@ export function runPreloader(lang) {
     if (reduced) { finish(); return; }
     if (revisit) { setTimeout(finish, 300); return; }
 
-    const DURATION = 1500; // 1,5s : assez pour la fiction, jamais frustrant
+    // 0,5s : juste le temps de lire le check-up. Un recruteur pressé
+    // doit voir le nom en moins de 1,5s après l'arrivée.
+    const DURATION = 500;
     const start = performance.now();
 
     // Le compteur 0→100%, synchronisé sur le temps réel
@@ -50,7 +56,7 @@ export function runPreloader(lang) {
       linesEl.innerHTML = LINES.slice(0, linesToShow).join('<br>');
 
       if (p < 1) requestAnimationFrame(tick);
-      else setTimeout(finish, 250); // une respiration avant le fondu
+      else setTimeout(finish, 120); // une respiration avant le fondu
     }
     requestAnimationFrame(tick);
   });

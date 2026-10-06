@@ -66,6 +66,45 @@ export function initStarfield() {
     });
   }
 
+  // --- Étoiles filantes : une toutes les 5 à 12 secondes -------
+  // Chaque météore : point de départ, direction, vitesse, durée de vie.
+  const meteors = [];
+  let nextMeteor = 3000; // la première arrive vite, après l'allumage
+  function spawnMeteor(now) {
+    const angle = (20 + Math.random() * 25) * Math.PI / 180; // vers le bas-droite
+    meteors.push({
+      x: Math.random() * W * 0.7,
+      y: Math.random() * H * 0.4,
+      vx: Math.cos(angle), vy: Math.sin(angle),
+      speed: (0.9 + Math.random() * 0.6) * dpr, // px par ms
+      len: (120 + Math.random() * 100) * dpr,
+      born: now, life: 900 + Math.random() * 500,
+    });
+    nextMeteor = now + 5000 + Math.random() * 7000;
+  }
+  function drawMeteors(now) {
+    if (started && now > nextMeteor && now - startTime > 2500) spawnMeteor(now);
+    for (let i = meteors.length - 1; i >= 0; i--) {
+      const m = meteors[i];
+      const t = now - m.born;
+      if (t > m.life) { meteors.splice(i, 1); continue; }
+      // Apparaît puis s'éteint (sinus sur la durée de vie)
+      const fade = Math.sin((t / m.life) * Math.PI);
+      const hx = m.x + m.vx * m.speed * t;
+      const hy = m.y + m.vy * m.speed * t;
+      const grad = ctx.createLinearGradient(hx, hy, hx - m.vx * m.len, hy - m.vy * m.len);
+      grad.addColorStop(0, `rgba(233,238,246,${0.9 * fade})`);
+      grad.addColorStop(0.3, `rgba(118,215,232,${0.4 * fade})`);
+      grad.addColorStop(1, 'rgba(118,215,232,0)');
+      ctx.strokeStyle = grad;
+      ctx.lineWidth = 1.2 * dpr;
+      ctx.beginPath();
+      ctx.moveTo(hx, hy);
+      ctx.lineTo(hx - m.vx * m.len, hy - m.vy * m.len);
+      ctx.stroke();
+    }
+  }
+
   // --- Rendu d'une frame --------------------------------------
   let drift = 0; // dérive automatique lente (remplace le parallax sur mobile)
 
@@ -126,6 +165,8 @@ export function initStarfield() {
         ctx.fill();
       }
     }
+
+    if (!reduced) drawMeteors(now);
   }
 
   // --- Boucle d'animation, avec pauses de performance ---------
@@ -160,15 +201,16 @@ export function initStarfield() {
     },
 
     /** Saut hyperspatial vers une ancre : accélère, scrolle, décélère */
-    warpTo(target) {
+    warpTo(target, onArrive) {
       if (reduced) {
-        gsap.to(window, { scrollTo: target, duration: 0 });
+        gsap.to(window, { scrollTo: target, duration: 0, onComplete: onArrive });
         return;
       }
       const speed = coarse ? 0.6 : 1; // warp réduit sur mobile
       gsap.timeline()
         .to({}, { duration: 0.25, onUpdate() { warpSpeed = this.progress() * speed; } })
-        .to(window, { scrollTo: { y: target, offsetY: 0 }, duration: 1, ease: 'power2.inOut' }, '<')
+        .to(window, { scrollTo: { y: target, offsetY: 0 }, duration: 1, ease: 'power2.inOut',
+                      onComplete: onArrive }, '<')
         .to({}, { duration: 0.5, onUpdate() { warpSpeed = (1 - this.progress()) * speed; },
                   ease: 'power2.out' });
     },

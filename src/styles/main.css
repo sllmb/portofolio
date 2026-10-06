@@ -6,7 +6,8 @@
 
 /* ---------- Reset minimal ---------- */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
+/* Pas de scroll-behavior: smooth : le défilement est piloté par GSAP
+   (warp), et le smooth CSS ré-animerait chaque frame → saccades */
 img { max-width: 100%; display: block; }
 button { font: inherit; background: none; border: none; cursor: pointer; color: inherit; }
 ul, ol { list-style: none; }
@@ -127,6 +128,7 @@ body.menu-open .burger span:last-child { transform: translateY(-3.75px) rotate(-
   padding: 0 var(--s-3);
   position: relative;
 }
+.hero-inner { display: flex; flex-direction: column; align-items: center; will-change: transform, opacity; }
 .hero-name {
   font-size: clamp(2.8rem, 9vw, 6.5rem);
   letter-spacing: 0.04em;
@@ -148,17 +150,19 @@ body.menu-open .burger span:last-child { transform: translateY(-3.75px) rotate(-
   html.js .hero-name, html.js .hero-title,
   html.js .hero-cta, html.js .scroll-hint { opacity: 0; }
 
-  html.js body.is-ready .constellation polyline { animation: trace 1.3s var(--ease-space) 0.6s forwards; }
+  /* Le nom d'abord, sans attente : il arrive pendant le fondu du préloader.
+     La constellation se trace en même temps, en décor, sans retenir le reste. */
+  html.js body.is-ready .hero-name { animation: rise 0.9s var(--ease-space) 0.1s forwards; }
+  html.js body.is-ready .hero-title { animation: fade 0.6s ease 0.35s forwards; }
+  html.js body.is-ready .hero-cta { animation: fade 0.6s ease 0.55s forwards; }
+  html.js body.is-ready .constellation polyline { animation: trace 1.3s var(--ease-space) 0.2s forwards; }
   html.js body.is-ready .constellation circle { animation: fade 0.5s ease forwards; }
-  html.js body.is-ready .constellation circle:nth-child(2) { animation-delay: 0.6s; }
-  html.js body.is-ready .constellation circle:nth-child(3) { animation-delay: 0.8s; }
-  html.js body.is-ready .constellation circle:nth-child(4) { animation-delay: 1.0s; }
-  html.js body.is-ready .constellation circle:nth-child(5) { animation-delay: 1.2s; }
-  html.js body.is-ready .constellation circle:nth-child(6) { animation-delay: 1.4s; }
-  html.js body.is-ready .hero-name { animation: rise 0.9s var(--ease-space) 1.5s forwards; }
-  html.js body.is-ready .hero-title { animation: fade 0.8s ease 2.1s forwards; }
-  html.js body.is-ready .hero-cta { animation: fade 0.8s ease 2.4s forwards; }
-  html.js body.is-ready .scroll-hint { animation: fade 0.8s ease 2.7s forwards, pulse 2.4s ease 3.5s infinite; }
+  html.js body.is-ready .constellation circle:nth-child(2) { animation-delay: 0.2s; }
+  html.js body.is-ready .constellation circle:nth-child(3) { animation-delay: 0.4s; }
+  html.js body.is-ready .constellation circle:nth-child(4) { animation-delay: 0.6s; }
+  html.js body.is-ready .constellation circle:nth-child(5) { animation-delay: 0.8s; }
+  html.js body.is-ready .constellation circle:nth-child(6) { animation-delay: 1.0s; }
+  html.js body.is-ready .scroll-hint { animation: fade 0.8s ease 1.2s forwards, pulse 2.4s ease 2s infinite; }
 }
 @keyframes trace { to { stroke-dashoffset: 0; } }
 @keyframes fade { to { opacity: 1; } }
@@ -181,8 +185,10 @@ body.menu-open .burger span:last-child { transform: translateY(-3.75px) rotate(-
   padding-left: var(--s-3);
 }
 
-/* Titres assemblés (Pack Spectacle C) : chaque lettre devient un span */
-h2[data-split] .ch { display: inline-block; white-space: pre; }
+/* Titres assemblés (Pack Spectacle C) : chaque lettre devient un span,
+   regroupé par mot insécable (pas de coupure au milieu d'un mot) */
+h2[data-split] .word { display: inline-block; white-space: nowrap; }
+h2[data-split] .ch { display: inline-block; }
 
 /* ---------- Boutons ---------- */
 .btn {
@@ -197,6 +203,9 @@ h2[data-split] .ch { display: inline-block; white-space: pre; }
               border-color var(--d-micro) ease;
 }
 .btn:active { transform: scale(0.97); }
+/* Effet magnétique (fx.js) : --mx / --my, indépendant du scale au survol */
+.btn, .nav-logo, .socials a { translate: var(--mx, 0px) var(--my, 0px); }
+.nav-logo, .socials a { display: inline-block; }
 .btn-primary { border: 1px solid var(--cyan-glacial); color: var(--cyan-glacial); }
 .btn-primary:hover { background: rgba(118, 215, 232, 0.08); transform: scale(1.02); }
 
@@ -241,15 +250,36 @@ h2[data-split] .ch { display: inline-block; white-space: pre; }
   border: 1px solid var(--bordure);
   border-radius: var(--radius);
   padding: var(--s-4);
+  /* Inclinaison 3D pilotée par fx.js (--rx / --ry) */
+  transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateY(var(--lift, 0px));
   transition: transform var(--d-micro) var(--ease-space), border-color var(--d-micro) ease;
 }
+/* Le reflet : une lueur qui suit le curseur sur la carte */
+.mission::after {
+  content: ''; position: absolute; inset: 0;
+  border-radius: inherit; pointer-events: none;
+  background: radial-gradient(360px circle at var(--gx, 50%) var(--gy, 0%), rgba(118, 215, 232, 0.08), transparent 60%);
+  opacity: 0;
+  transition: opacity var(--d-elem) ease;
+}
+.mission:hover::after { opacity: 1; }
 /* La planète emblème : flotte en haut à droite de la carte */
 .mission-planet {
   position: absolute;
   top: var(--s-3); right: var(--s-3);
   width: 92px; height: 92px;
   pointer-events: none;
+  /* Profondeur : la planète glisse plus que la carte (fx.js → --tx / --ty) */
+  translate: var(--tx, 0px) var(--ty, 0px);
+  transition: translate var(--d-elem) var(--ease-space);
 }
+/* Le satellite en orbite autour de chaque planète */
+.mission-planet .orbit { transform-origin: 70px 70px; }
+@media (prefers-reduced-motion: no-preference) {
+  .mission-planet .orbit { animation: orbit 14s linear infinite; }
+  .mission:hover .mission-planet .orbit { animation-duration: 5s; }
+}
+@keyframes orbit { to { transform: rotate(360deg); } }
 .mission-planet svg {
   width: 100%; height: 100%;
   transition: transform var(--d-elem) var(--ease-space);
@@ -268,7 +298,7 @@ h2[data-split] .ch { display: inline-block; white-space: pre; }
   .mission-meta, .mission h3 { padding-right: 72px; }
 }
 .mission:hover, .mission.active {
-  transform: translateY(-4px);
+  --lift: -4px;
   border-color: rgba(118, 215, 232, 0.4);
 }
 .mission-meta {
@@ -382,7 +412,45 @@ h2[data-split] .ch { display: inline-block; white-space: pre; }
   border-top: 1px solid var(--bordure);
 }
 
+/* ---------- Pack Spectacle 2 (fx.js) ---------- */
+/* Barre de progression du voyage */
+.progress {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 20;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--cyan-glacial));
+  transform-origin: left;
+  transform: scaleX(0);
+  pointer-events: none;
+}
+/* Curseur halo : centré sur la souris via les marges négatives */
+.cursor-ring {
+  position: fixed; top: 0; left: 0; z-index: 150;
+  width: 32px; height: 32px;
+  margin: -16px 0 0 -16px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--d-micro) ease;
+}
+/* GSAP pilote le transform du conteneur (position) ; l'anneau visible est
+   le pseudo-élément, qui change de taille en scale → aucun width/height
+   animé, donc aucun recalcul de mise en page */
+.cursor-ring::before {
+  content: ''; position: absolute; inset: 0;
+  border: 1px solid rgba(118, 215, 232, 0.5);
+  border-radius: 50%;
+  transition: transform var(--d-micro) var(--ease-space), background-color var(--d-micro) ease;
+}
+.cursor-ring.visible { opacity: 1; }
+.cursor-ring.hover::before { transform: scale(1.75); background: rgba(118, 215, 232, 0.06); }
+.cursor-ring.press::before { transform: scale(0.75); }
+
 /* ---------- Accessibilité ---------- */
+/* Texte réservé aux lecteurs d'écran (ex. titre découpé en lettres) */
+.sr-only {
+  position: absolute; width: 1px; height: 1px;
+  margin: -1px; padding: 0; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
 .skip-link {
   position: fixed; top: 8px; left: 8px; z-index: 200;
   background: var(--bleu-abysse); color: var(--blanc-stellaire);
@@ -394,6 +462,8 @@ h2[data-split] .ch { display: inline-block; white-space: pre; }
 }
 .skip-link:focus { transform: translateY(0); }
 :focus-visible { outline: 2px solid var(--cyan-glacial); outline-offset: 3px; }
+/* Sections focalisées par le script (arrivée d'un warp) : pas de cadre géant */
+[tabindex="-1"]:focus { outline: none; }
 
 /* ---------- Nébuleuse vivante (Pack Spectacle E) ---------- */
 @media (prefers-reduced-motion: no-preference) {

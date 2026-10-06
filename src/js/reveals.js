@@ -24,14 +24,35 @@ export function splitTitles() {
     // (changement de langue → le texte est remplacé → on redécoupe)
     ScrollTrigger.getAll().forEach((st) => { if (st.trigger === h2) st.kill(); });
 
-    const text = h2.textContent;
+    // Texte d'origine : la copie lisible si le titre est déjà découpé
+    const sr = h2.querySelector('.sr-only');
+    const text = (sr ? sr.textContent : h2.textContent).trim();
     h2.innerHTML = '';
-    for (const char of text) {
-      const span = document.createElement('span');
-      span.className = 'ch';
-      span.textContent = char;
-      h2.appendChild(span);
-    }
+
+    // Les lecteurs d'écran lisent la phrase entière, pas lettre par lettre
+    const label = document.createElement('span');
+    label.className = 'sr-only';
+    label.textContent = text;
+    h2.appendChild(label);
+
+    // Lettres regroupées par mot (insécable) : le retour à la ligne ne
+    // tombe qu'entre deux mots, et la ponctuation reste collée au sien
+    const visual = document.createElement('span');
+    visual.setAttribute('aria-hidden', 'true');
+    text.split(/( +)/).forEach((part) => {
+      if (!part) return;
+      if (part.trim() === '') { visual.append(' '); return; }
+      const word = document.createElement('span');
+      word.className = 'word';
+      for (const char of part) {
+        const span = document.createElement('span');
+        span.className = 'ch';
+        span.textContent = char;
+        word.appendChild(span);
+      }
+      visual.appendChild(word);
+    });
+    h2.appendChild(visual);
 
     if (reduced) return;
 
@@ -59,6 +80,9 @@ export function initReveals() {
       y: 24,
       duration: 0.8,
       ease: EASE,
+      // Rendre la main au CSS une fois arrivé : sinon le transform inline
+      // de GSAP écrase le survol (soulèvement + inclinaison 3D des cartes)
+      clearProps: 'transform,opacity',
       scrollTrigger: { trigger: el, start: 'top 85%', once: true },
     });
   });
