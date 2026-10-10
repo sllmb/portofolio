@@ -7,7 +7,9 @@
    2. Une parallaxe douce (la planète glisse plus lentement que le texte)
    3. La lumière du jour (.daylight) qui monte au fil du défilement
    4. Chaque planète tourne sur elle-même, à sa vitesse (Vénus à l'envers),
-      les anneaux de Saturne circulent, la Lune tourne autour de la Terre
+      les anneaux de Saturne circulent, la Lune tourne autour de la Terre,
+      les quatre lunes galiléennes autour de Jupiter (résonance 1:2:4)
+   6. Une sonde accompagne le visiteur ; le Soleil répond aux messages
    5. Des planètes interactives : survol (elle s'illumine), glisser
       (on pousse sa surface), clic (une fiche avec deux faits vrais
       et un bouton « Prochaine escale » qui saute en warp)
@@ -136,6 +138,21 @@ const DRAW = {
     <circle cx="80" cy="96" r="12" fill="#7F776F"/><circle cx="124" cy="128" r="9" fill="#7F776F"/>
     <circle cx="112" cy="78" r="6" fill="#7F776F"/><circle cx="74" cy="138" r="7" fill="#7F776F"/>
     <circle cx="170" cy="110" r="10" fill="#7F776F"/><circle cx="22" cy="80" r="8" fill="#7F776F"/>`),
+
+  /* Les lunes galiléennes de Jupiter, chacune avec sa surface */
+  io: (uid) => globe(uid, '#E8C35A', `
+    <circle cx="60" cy="80" r="16" fill="#C9862F"/><circle cx="130" cy="120" r="12" fill="#B5542C"/>
+    <circle cx="170" cy="70" r="10" fill="#F2E3A0"/><circle cx="20" cy="130" r="14" fill="#C9862F"/>`),
+  europa: (uid) => globe(uid, '#D9CDB8', `
+    <path d="M0 70 q60 30 120 -10 t80 20" fill="none" stroke="#A8785A" stroke-width="5" opacity=".7"/>
+    <path d="M0 120 q50 -26 110 6 t90 -12" fill="none" stroke="#A8785A" stroke-width="4" opacity=".6"/>`),
+  ganymede: (uid) => globe(uid, '#9C8E7E', `
+    <ellipse cx="70" cy="90" rx="34" ry="24" fill="#6F6457"/><ellipse cx="160" cy="120" rx="26" ry="18" fill="#7C7062"/>
+    <circle cx="120" cy="60" r="8" fill="#C9BFB2"/>`),
+  callisto: (uid) => globe(uid, '#6F665C', `
+    <circle cx="50" cy="80" r="9" fill="#B9AFA2"/><circle cx="110" cy="120" r="7" fill="#B9AFA2"/>
+    <circle cx="150" cy="70" r="6" fill="#B9AFA2"/><circle cx="20" cy="130" r="8" fill="#B9AFA2"/>
+    <circle cx="90" cy="60" r="4" fill="#B9AFA2"/>`),
 };
 
 /* Vitesses de rotation : le temps (en secondes) pour un tour complet à
@@ -143,7 +160,21 @@ const DRAW = {
    visibles : Jupiter 9 h 56 (la plus rapide) … Vénus 243 jours, et à
    l'envers (signe négatif) : c'est la seule planète qui tourne dans
    l'autre sens. */
-const TURN = { jupiter: 16, saturn: 17, neptune: 24, earth: 34, mars: 35, mercury: 90, venus: -140, moon: 48 };
+const TURN = { jupiter: 16, saturn: 17, neptune: 24, earth: 34, mars: 35, mercury: 90, venus: -140, moon: 48,
+  // Lunes de Jupiter : Io fait 4 tours quand Europe en fait 2 et Ganymède 1 (résonance réelle)
+  io: 6, europa: 12, ganymede: 24, callisto: 56 };
+
+/* Les orbites : ellipse (rx, ry en fraction de la taille de la planète), inclinaison.
+   Les lunes de Jupiter sont vues presque par la tranche, comme au télescope :
+   elles vont et viennent de part et d'autre de la planète. */
+const ORBITS = {
+  moon:     { rx: 0.66, ry: 0.17, tilt: -12 },
+  io:       { rx: 0.50, ry: 0.035, tilt: -3 },
+  europa:   { rx: 0.60, ry: 0.045, tilt: -3 },
+  ganymede: { rx: 0.72, ry: 0.055, tilt: -3 },
+  callisto: { rx: 0.86, ry: 0.065, tilt: -3 },
+};
+const JUPITER_MOONS = ['io', 'europa', 'ganymede', 'callisto'];
 
 /* La ceinture d'astéroïdes, entre Jupiter et Mars : trois couches qui
    défilent sans fin, chacune à sa vitesse (les plus proches vont plus vite,
@@ -213,12 +244,12 @@ const ROUTE = [
 
 /* L'ordre des escales : chaque fiche propose la suivante.
    Le Soleil boucle sur le départ (le hero). */
-const STOPS = ['neptune', 'saturn', 'jupiter', 'mars', 'earth', 'moon', 'venus', 'mercury', 'sun'];
+const STOPS = ['neptune', 'saturn', 'jupiter', 'io', 'europa', 'ganymede', 'callisto', 'mars', 'earth', 'moon', 'venus', 'mercury', 'sun'];
 
 function planetButton(name, uid) {
   const btn = document.createElement('button');
   btn.type = 'button';
-  btn.className = 'solar-planet' + (name === 'moon' ? ' solar-moon' : '');
+  btn.className = 'solar-planet' + (ORBITS[name] ? ' solar-moon' : '');
   btn.dataset.planet = name;
   btn.dataset.ariaKey = 'planet.' + name + '.open';
   btn.setAttribute('aria-label', t('planet.' + name + '.open'));
@@ -242,6 +273,7 @@ function makeBody(name, uid) {
   el.appendChild(planetButton(name, uid));
   // La Lune accompagne la Terre : même corps, donc même parallaxe
   if (name === 'earth') el.appendChild(planetButton('moon', uid + '-moon'));
+  if (name === 'jupiter') JUPITER_MOONS.forEach((m) => el.appendChild(planetButton(m, uid + '-' + m)));
 
   if (name !== 'sun') {
     // L'étiquette : nom + distance au Soleil, traduite comme le reste du site
@@ -276,23 +308,23 @@ function tick(time, deltaTime) {
   }
 }
 
-/* L'orbite de la Lune : une ellipse inclinée autour du centre de la Terre.
-   Devant la Terre sur la moitié basse du trajet, derrière sur la moitié haute
-   (la classe .is-behind la fait passer sous le bouton de la Terre). */
-function makeOrbit(moon) {
+/* L'orbite d'une lune : une ellipse inclinée autour du centre de sa planète.
+   Devant la planète sur la moitié basse du trajet, derrière sur la moitié haute
+   (la classe .is-behind la fait passer sous le bouton de la planète). */
+function makeOrbit(moon, { rx, ry, tilt }) {
   const body = moon.closest('.solar-body');
-  const TILT = -12 * Math.PI / 180;
-  const size = () => body.querySelector('.solar-planet').getBoundingClientRect().width;
+  const TILT = tilt * Math.PI / 180;
+  const size = () => body.querySelector('.solar-planet:not(.solar-moon)').getBoundingClientRect().width;
   const fn = (turns) => {
     const a = turns * 2 * Math.PI;
     const w = size();
-    const x0 = Math.cos(a) * w * 0.66, y0 = Math.sin(a) * w * 0.17;
+    const x0 = Math.cos(a) * w * rx, y0 = Math.sin(a) * w * ry;
     const x = x0 * Math.cos(TILT) - y0 * Math.sin(TILT);
     const y = x0 * Math.sin(TILT) + y0 * Math.cos(TILT);
     moon.style.transform = `translate(calc(-50% + ${x.toFixed(1)}px), calc(-50% + ${y.toFixed(1)}px))`;
     moon.classList.toggle('is-behind', Math.sin(a) < 0);
   };
-  fn.rx = () => size() * 0.66;
+  fn.rx = () => size() * rx;
   return fn;
 }
 
@@ -302,7 +334,7 @@ function makeSpinnable(btn, name, onClick) {
   const P = Number(surfaces[0].dataset.period);
   const vbWidth = art.viewBox.baseVal.width;
   const rings = [...art.querySelectorAll('.ring-flow')];
-  const orbit = name === 'moon' ? makeOrbit(btn) : null;
+  const orbit = ORBITS[name] ? makeOrbit(btn, ORBITS[name]) : null;
   const s = {
     P, turn: TURN[name], phase: Math.random() * P, boost: 0, visible: false, dragging: false,
     apply() {
@@ -444,7 +476,7 @@ function makeCard(starfield) {
       }
       const target = document.querySelector(`.solar-planet[data-planet="${next}"]`);
       const section = target.closest('section');
-      // Escale dans la même section (Terre → Lune, Vénus → Mercure → Soleil) : on vise la planète
+      // Escale dans la même section (Jupiter → ses lunes, Terre → Lune, Vénus → Mercure → Soleil)
       const dest = section.contains(btn) ? target.closest('.solar-body') : section;
       // À l'arrivée, le focus va sur la planète suivante : on peut continuer au clavier
       starfield.warpTo(dest, () => target.focus({ preventScroll: true }));
@@ -491,8 +523,103 @@ function makeCard(starfield) {
   return { open, close, isOpenFor: (btn) => current === btn };
 }
 
+
+/* --- Le Soleil répond aux messages ---------------------------------
+   form.js émet l'évènement "transmission" quand un message est bien
+   parti. Si le Soleil est là, il fait une éruption et c'est lui qui
+   lance l'étoile filante (form.js n'envoie alors pas la sienne). */
+function initSunReply() {
+  addEventListener('transmission', (e) => {
+    const sunBody = document.querySelector('.solar-body[data-body="sun"]');
+    const disc = sunBody?.querySelector('.sun-disc');
+    if (!disc || !disc.getClientRects().length || reduced) return;
+    e.preventDefault();
+    sunBody.classList.remove('is-flaring');
+    void sunBody.offsetWidth; // relancer l'animation
+    sunBody.classList.add('is-flaring');
+    setTimeout(() => sunBody.classList.remove('is-flaring'), 1700);
+
+    // L'étoile filante part du cœur du Soleil, vers le haut de l'écran
+    const r = disc.getBoundingClientRect();
+    const sx = r.left + r.width / 2, sy = Math.min(r.top + r.height / 2, innerHeight - 40);
+    const tx = -200, ty = innerHeight * 0.08;
+    const angle = Math.atan2(ty - sy, tx - sx) * 180 / Math.PI;
+    const comet = document.createElement('span');
+    comet.className = 'sun-comet';
+    comet.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(comet);
+    gsap.set(comet, { x: sx, y: sy, rotation: angle });
+    gsap.to(comet, {
+      x: tx, y: ty, duration: 1.3, delay: 0.35, ease: 'power2.in',
+      onComplete: () => comet.remove(),
+    });
+  });
+}
+
+/* --- La sonde : le vaisseau du visiteur ----------------------------
+   Fixée à l'écran, elle "descend" avec le défilement pendant que les
+   planètes passent. Elle s'incline et sa traînée s'allonge quand on
+   défile vite ; près du Soleil, elle déploie ses panneaux solaires.
+   Décor pur : aria-hidden, pointer-events: none (ne bloque aucun clic). */
+const PROBE_SVG = `
+  <svg viewBox="0 -16 60 96" aria-hidden="true">
+    <polygon class="probe-flame" points="26,6 34,6 30,-14" fill="#FFB24C"/>
+    <rect x="27" y="4" width="6" height="5" fill="#5E6B82"/>
+    <ellipse cx="30" cy="16" rx="19" ry="6" fill="#C9D3E3"/>
+    <ellipse cx="30" cy="15" rx="12" ry="3" fill="#E9EEF6"/>
+    <line x1="30" y1="20" x2="30" y2="26" stroke="#8D9AB3" stroke-width="2"/>
+    <g class="probe-panel probe-panel-l"><rect x="2" y="30" width="18" height="12" fill="#2E4A7A" stroke="#8DA6D9" stroke-width=".8"/>
+      <line x1="8" y1="30" x2="8" y2="42" stroke="#8DA6D9" stroke-width=".5"/><line x1="14" y1="30" x2="14" y2="42" stroke="#8DA6D9" stroke-width=".5"/></g>
+    <g class="probe-panel probe-panel-r"><rect x="40" y="30" width="18" height="12" fill="#2E4A7A" stroke="#8DA6D9" stroke-width=".8"/>
+      <line x1="46" y1="30" x2="46" y2="42" stroke="#8DA6D9" stroke-width=".5"/><line x1="52" y1="30" x2="52" y2="42" stroke="#8DA6D9" stroke-width=".5"/></g>
+    <rect x="21" y="26" width="18" height="20" rx="2" fill="#8D9AB3"/>
+    <rect x="24" y="29" width="12" height="4" fill="#5E6B82"/>
+    <circle class="probe-led" cx="30" cy="39" r="2.2" fill="#76D7E8"/>
+    <line x1="34" y1="46" x2="46" y2="64" stroke="#8D9AB3" stroke-width="1.2"/>
+    <circle cx="46" cy="64" r="1.8" fill="#C9D3E3"/>
+  </svg>`;
+
+function initProbe() {
+  if (reduced) return;
+  const probe = document.createElement('div');
+  probe.className = 'probe';
+  probe.setAttribute('aria-hidden', 'true');
+  probe.innerHTML = '<span class="probe-trail"></span>' + PROBE_SVG;
+  document.body.appendChild(probe);
+  const trail = probe.querySelector('.probe-trail');
+  const flame = probe.querySelector('.probe-flame');
+
+  let lastY = scrollY, speed = 0, t = 0;
+  gsap.ticker.add((time, deltaTime) => {
+    const dt = Math.max(1, Math.min(deltaTime, 64));
+    t += dt / 1000;
+    const max = document.documentElement.scrollHeight - innerHeight;
+    const p = max > 0 ? scrollY / max : 0;
+    // vitesse de défilement lissée (px par ms ; positive vers le bas)
+    speed += ((scrollY - lastY) / dt - speed) * 0.12;
+    lastY = scrollY;
+
+    const landed = p > 0.985;
+    probe.classList.toggle('is-landed', landed);
+    // apparaît en quittant le décollage
+    probe.style.opacity = Math.min(1, Math.max(0, (scrollY - innerHeight * 0.35) / 220));
+
+    const wave = Math.sin(p * Math.PI * 3);              // trajectoire en douce vague
+    const x = wave * 26;
+    const bob = Math.sin(t * 1.6) * 4;                    // flottement en apesanteur
+    const tilt = landed ? 0 : Math.max(-22, Math.min(22, speed * 9 * Math.cos(p * Math.PI * 3) + wave * 4));
+    probe.style.transform = `translate(${x.toFixed(1)}px, ${bob.toFixed(1)}px) rotate(${tilt.toFixed(1)}deg)`;
+
+    const thrust = landed ? 0 : Math.min(1, Math.abs(speed) / 2.5);
+    trail.style.transform = `scaleY(${thrust.toFixed(3)})`;
+    flame.style.transform = `scaleY(${(0.35 + thrust * 1.4 + Math.random() * 0.15).toFixed(3)})`;
+  });
+}
+
 export function initSolar(starfield) {
   const card = makeCard(starfield);
+  initSunReply();
+  initProbe();
 
   ROUTE.forEach(({ section, bodies }) => {
     const host = document.querySelector(section);
@@ -522,7 +649,8 @@ export function initSolar(starfield) {
       }
 
       // Parallaxe : la planète glisse moins vite que le contenu (elle est loin)
-      const depth = name === 'jupiter' ? 30 : name === 'belt' ? 10 : 22;
+      // Jupiter bouge peu : ses lunes doivent rester dans la bande vide au-dessus des compétences
+      const depth = name === 'jupiter' ? 12 : name === 'belt' ? 10 : 22;
       gsap.fromTo(body, { yPercent: depth, rotation: -4 }, {
         yPercent: -depth, rotation: 4, ease: 'none',
         scrollTrigger: { trigger: host, start: 'top bottom', end: 'bottom top', scrub: true },

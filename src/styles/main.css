@@ -96,13 +96,65 @@ main { overflow-x: clip; }
 .solar-body[data-body="earth"]   { --size: clamp(150px, 16vw, 216px); top: var(--s-12); right: calc(50% - 50vw + 9vw); }
 /* La Lune : en orbite autour du centre de la Terre (position calculée dans solar.js).
    Zone de clic d'au moins 44 px, même si le dessin est plus petit. */
-.solar-body[data-body="earth"] > .solar-planet:not(.solar-moon) { position: relative; z-index: 1; }
+.solar-body > .solar-planet:not(.solar-moon) { position: relative; z-index: 1; }
 .solar-planet.solar-moon {
   position: absolute; left: 50%; top: calc(var(--size) / 2); z-index: 2;
   width: max(44px, calc(var(--size) * 0.24)); padding: calc(var(--size) * 0.03);
   border-radius: 50%;
 }
 .solar-planet.solar-moon.is-behind { z-index: 0; }
+/* Les lunes de Jupiter : petites, mais une zone de clic de 36 px */
+.solar-planet.solar-moon[data-planet="io"]       { width: 36px; padding: 11px; }
+.solar-planet.solar-moon[data-planet="europa"]   { width: 36px; padding: 11.5px; }
+.solar-planet.solar-moon[data-planet="ganymede"] { width: 36px; padding: 8.5px; }
+.solar-planet.solar-moon[data-planet="callisto"] { width: 36px; padding: 9.5px; }
+
+/* Le Soleil respire : une couronne qui pulse doucement */
+.sun-disc { position: relative; }
+.sun-disc::after {
+  content: ''; position: absolute; inset: 0; border-radius: 50%;
+  background: radial-gradient(circle, transparent 38%, rgba(255, 178, 76, 0.22) 46%, transparent 64%);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .sun-disc::after { animation: corona 6s ease-in-out infinite; }
+  .solar-body[data-body="sun"].is-flaring .sun-disc { animation: flare 1.6s var(--ease-space); }
+}
+@keyframes corona { 50% { transform: scale(1.06); opacity: 0.6; } }
+@keyframes flare {
+  20% { filter: brightness(1.35); transform: scale(1.05); }
+  100% { filter: brightness(1); transform: scale(1); }
+}
+/* L'étoile filante lancée par le Soleil (position et angle posés par GSAP) */
+.sun-comet {
+  position: fixed; top: 0; left: 0; z-index: 50; pointer-events: none;
+  width: 220px; height: 2px; margin-top: -1px;
+  transform-origin: 0 50%;
+  background: linear-gradient(90deg, var(--soleil-coeur), rgba(255, 178, 76, 0.6) 30%, transparent);
+  border-radius: 2px;
+}
+
+/* La sonde du visiteur */
+.probe {
+  position: fixed; top: 40vh; right: 3vw; z-index: 5;
+  width: 46px; pointer-events: none; opacity: 0;
+}
+.probe svg { display: block; width: 100%; height: auto; overflow: visible; }
+.probe-trail {
+  position: absolute; left: 50%; bottom: 100%; width: 2px; height: 140px; margin-left: -1px;
+  background: linear-gradient(to top, rgba(118, 215, 232, 0.55), transparent);
+  transform-origin: bottom; transform: scaleY(0);
+}
+.probe-flame { transform-box: fill-box; transform-origin: 50% 100%; }
+.probe-panel { transform-box: fill-box; transition: transform var(--d-elem) var(--ease-space); }
+.probe-panel-l { transform-origin: 100% 50%; transform: scaleX(0); }
+.probe-panel-r { transform-origin: 0 50%; transform: scaleX(0); }
+.probe.is-landed .probe-panel { transform: scaleX(1); }
+.probe.is-landed .probe-flame { opacity: 0; }
+@media (prefers-reduced-motion: no-preference) {
+  .probe-led { animation: pulse 1.6s ease infinite; }
+}
+/* Sur petit écran, le texte occupe toute la largeur : pas de sonde */
+@media (max-width: 767px) { .probe { display: none; } }
 .solar-body[data-body="venus"]   { --size: clamp(84px, 9vw, 130px);   top: var(--s-12); right: calc(50% - 50vw + 24vw); }
 .solar-body[data-body="mercury"] { --size: clamp(46px, 4.5vw, 64px);  top: 34%; right: calc(50% - 50vw + 9vw); }
 
@@ -178,7 +230,7 @@ main { overflow-x: clip; }
 @media (max-width: 767px) {
   .solar-body[data-body="neptune"] { --size: 52px; top: 11%; right: 10px; }
   .solar-body[data-body="saturn"]  { --size: 150px; top: 20px; right: -44px; }
-  .solar-body[data-body="jupiter"] { --size: 220px; top: -30px; right: -110px; }
+  .solar-body[data-body="jupiter"] { --size: 220px; top: -62px; right: -110px; }
   .solar-body[data-body="mars"]    { --size: 72px;  top: 6px;   right: -6px; }
   /* Planètes à moitié hors écran : l'étiquette serait coupée (la fiche donne la distance) */
   .solar-label { display: none; }
@@ -194,6 +246,8 @@ main { overflow-x: clip; }
 }
 @media (max-width: 479px) {
   .solar-body[data-body="neptune"] { display: none; }
+  /* Callisto, la lune la plus éloignée, toucherait le titre sur téléphone */
+  .solar-planet.solar-moon[data-planet="callisto"] { display: none; }
 }
 
 /* ---------- Préloader (Pack Spectacle B) ---------- */
@@ -274,7 +328,9 @@ body.menu-open .burger span:last-child { transform: translateY(-3.75px) rotate(-
 .hero-title { color: var(--gris-lunaire); margin-top: var(--s-2); text-wrap: balance; }
 .hero-cta { margin-top: var(--s-6); }
 .hero-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--s-2); }
-.constellation { width: min(320px, 70vw); color: var(--cyan-glacial); margin-bottom: var(--s-3); }
+.constellation { width: min(210px, 56vw); color: var(--cyan-glacial); margin-bottom: var(--s-3); }
+/* Le point entre les initiales : l'étoile la plus brillante */
+.constellation .c-dot { fill: var(--blanc-stellaire); }
 .constellation circle { fill: currentColor; }
 .scroll-hint {
   position: absolute; bottom: var(--s-4);
@@ -295,18 +351,19 @@ body.menu-open .burger span:last-child { transform: translateY(-3.75px) rotate(-
   html.js body.is-ready .hero-title { animation: fade 0.6s ease 0.35s forwards; }
   html.js body.is-ready .hero-cta { animation: fade 0.6s ease 0.55s forwards; }
   html.js body.is-ready .constellation polyline { animation: trace 1.3s var(--ease-space) 0.2s forwards; }
-  html.js body.is-ready .constellation circle { animation: fade 0.5s ease forwards; }
-  html.js body.is-ready .constellation circle:nth-child(2) { animation-delay: 0.2s; }
-  html.js body.is-ready .constellation circle:nth-child(3) { animation-delay: 0.4s; }
-  html.js body.is-ready .constellation circle:nth-child(4) { animation-delay: 0.6s; }
-  html.js body.is-ready .constellation circle:nth-child(5) { animation-delay: 0.8s; }
-  html.js body.is-ready .constellation circle:nth-child(6) { animation-delay: 1.0s; }
+  html.js body.is-ready .constellation .c-d { animation-delay: 0.55s; }
+  /* Les étoiles s'allument une à une, puis scintillent doucement */
+  html.js body.is-ready .constellation circle {
+    animation: fade 0.5s ease calc(0.15s + var(--i) * 0.07s) forwards,
+               twinkle 3.2s ease-in-out calc(1.6s + var(--i) * 0.37s) infinite;
+  }
   html.js body.is-ready .scroll-hint { animation: fade 0.8s ease 1.2s forwards, pulse 2.4s ease 2s infinite; }
 }
 @keyframes trace { to { stroke-dashoffset: 0; } }
 @keyframes fade { to { opacity: 1; } }
 @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+@keyframes twinkle { 0%, 100% { opacity: 1; } 50% { opacity: 0.55; } }
 
 /* ---------- Sections génériques ---------- */
 .section {

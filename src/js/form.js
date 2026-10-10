@@ -35,7 +35,10 @@ export function initForm() {
       if (data.success) {
         status.textContent = t('contact.success');
         form.reset();
-        shootStar(); // la récompense
+        // La récompense : le Soleil la lance s'il est là (solar.js),
+        // sinon l'étoile filante d'origine traverse l'écran
+        const reward = new CustomEvent('transmission', { cancelable: true });
+        if (dispatchEvent(reward)) shootStar();
       } else {
         throw new Error(data.message);
       }
