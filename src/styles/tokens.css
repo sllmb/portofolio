@@ -11,6 +11,7 @@
   --gris-lunaire:  #8D9AB3;   /* texte secondaire (≥ 4,5:1 même sous la lumière du Soleil) */
   --cyan-glacial:  #76D7E8;   /* L'accent. Rare et précieux : max 5% de l'écran */
   --bordure:       #1C2840;   /* bordures fines dérivées du bleu abysse */
+  --alerte:        #FF9B8A;   /* erreurs de formulaire (≥ 4,5:1 sur le bleu abysse) */
 
   /* Le voyage vers le Soleil (solar.js) : le chaud reste dans le ciel,
      le cyan reste l'accent de l'interface */

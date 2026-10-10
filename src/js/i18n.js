@@ -37,6 +37,12 @@ export function applyLang(lang) {
     if (value !== undefined) el.setAttribute('aria-label', value);
   });
 
+  // Les descriptions d'images : data-i18n-alt="clé"
+  document.querySelectorAll('[data-i18n-alt]').forEach((el) => {
+    const value = dict[el.dataset.i18nAlt];
+    if (value !== undefined) el.setAttribute('alt', value);
+  });
+
   // Titre de l'onglet + description (moteurs de recherche, partages)
   if (dict['meta.title']) document.title = dict['meta.title'];
   const desc = document.querySelector('meta[name="description"]');

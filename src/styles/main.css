@@ -444,7 +444,7 @@ h2[data-split] .ch { display: inline-block; }
   transform-origin: top;
 }
 .mission {
-  position: relative;
+  position: relative; min-width: 0;
   background: var(--bleu-abysse);
   border: 1px solid var(--bordure);
   border-radius: var(--radius);
@@ -539,6 +539,36 @@ h2[data-split] .ch { display: inline-block; }
 }
 .mission-links a:hover { background-size: 100% 1px; color: var(--cyan-glacial); }
 
+/* La mission phare : plus d'air, et la capture du site en preuve */
+.mission-featured { padding: var(--s-6) var(--s-4) var(--s-4); }
+.mission-featured h3 { font-size: clamp(1.6rem, 3vw, 2.2rem); }
+.mission-shot {
+  margin-top: var(--s-4);
+  border: 1px solid var(--bordure);
+  border-radius: calc(var(--radius) * 0.75);
+  overflow: hidden;
+  background: #fff;
+}
+.mission-shot-bar {
+  display: flex; align-items: center; gap: 6px;
+  padding: 8px 12px;
+  background: var(--bleu-abysse);
+  border-bottom: 1px solid var(--bordure);
+  color: var(--gris-lunaire); font-size: 0.75rem;
+}
+.mission-shot-bar i {
+  flex-shrink: 0; width: 8px; height: 8px; border-radius: 50%;
+  background: var(--bordure);
+}
+.mission-shot-bar i:last-of-type { margin-right: 8px; }
+/* L'adresse ne doit jamais élargir la carte sur téléphone */
+.mission-shot-bar span { min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mission-shot img {
+  display: block; width: 100%; height: auto;
+  transition: transform var(--d-elem) var(--ease-space);
+}
+.mission-featured:hover .mission-shot img { transform: scale(1.015); }
+
 /* ---------- Timeline (05 · Orbite) ---------- */
 .timeline { position: relative; padding-left: var(--s-4); }
 .timeline ol { display: grid; gap: var(--s-8); }
@@ -563,6 +593,26 @@ h2[data-split] .ch { display: inline-block; }
 
 /* ---------- Contact (06 · Atterrissage) ---------- */
 .contact h2 { max-width: 18ch; }
+/* Le canal direct : l'email, en grand, avant le formulaire */
+.direct { margin-bottom: var(--s-6); }
+.direct-label, .direct-or { color: var(--gris-lunaire); }
+.direct-row {
+  display: flex; flex-wrap: wrap; align-items: center;
+  gap: var(--s-2) var(--s-3);
+  margin: 10px 0 var(--s-6);
+}
+.direct-email {
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 4.2vw, 2.4rem);
+  color: var(--blanc-stellaire); text-decoration: none;
+  overflow-wrap: anywhere;
+  background-image: linear-gradient(var(--cyan-glacial), var(--cyan-glacial));
+  background-repeat: no-repeat; background-position: left bottom;
+  background-size: 0% 1px; padding-bottom: 4px;
+  transition: background-size var(--d-micro) var(--ease-space), color var(--d-micro) ease;
+}
+.direct-email:hover { color: var(--cyan-glacial); background-size: 100% 1px; }
+.direct-copy { min-height: 44px; min-width: 7.5em; }
 #contact-form { max-width: 540px; display: grid; gap: var(--s-3); margin-bottom: var(--s-8); }
 .field label { display: block; color: var(--gris-lunaire); margin-bottom: 8px; }
 .field input, .field textarea {
@@ -579,8 +629,12 @@ h2[data-split] .ch { display: inline-block; }
   outline: none;
   border-color: var(--cyan-glacial);
 }
+.field [aria-invalid="true"] { border-color: var(--alerte); }
+.field-error { color: var(--alerte); font-size: 0.85rem; margin-top: 6px; }
+.field-error:empty { display: none; }
 #contact-form .btn { justify-self: start; }
-.form-status { color: var(--cyan-glacial); min-height: 1.2em; }
+/* Messages déjà écrits en capitales : l'email du message d'échec reste en minuscules */
+.form-status { color: var(--cyan-glacial); min-height: 1.2em; text-transform: none; }
 .socials { display: flex; gap: var(--s-4); flex-wrap: wrap; }
 .socials a {
   color: var(--gris-lunaire); text-decoration: none;

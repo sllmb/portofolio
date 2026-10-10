@@ -130,7 +130,7 @@
         <!-- La trajectoire : la ligne qui se trace au scroll entre les missions -->
         <div class="trajectory" aria-hidden="true"></div>
 
-        <article class="mission" data-reveal>
+        <article class="mission mission-featured" data-reveal>
           <div class="mission-planet" data-planet="gas" aria-hidden="true"></div>
           <div class="mission-meta mono">
             <span class="status"><span class="dot"></span><span data-i18n="missions.m1.status">EN LIGNE</span></span>
@@ -143,6 +143,13 @@
             <a href="https://github.com/lambiss12-hue/Xibaar_Yi" target="_blank" rel="noopener">GitHub ↗</a>
             <a href="https://xibaaryi.infinityfreeapp.com" target="_blank" rel="noopener" data-i18n="missions.demo">Démo ↗</a>
           </div>
+          <!-- La capture : la page d'accueil du site, dans un cadre de navigateur -->
+          <figure class="mission-shot">
+            <div class="mission-shot-bar mono" aria-hidden="true"><i></i><i></i><i></i><span>xibaaryi.infinityfreeapp.com</span></div>
+            <img src="missions/xibaar-yi.webp" srcset="missions/xibaar-yi-720.webp 720w, missions/xibaar-yi.webp 1200w"
+                 sizes="(max-width: 1100px) 90vw, 1000px" width="1200" height="750" loading="lazy" decoding="async"
+                 alt="Page d'accueil de Xibaar Yi : derniers articles, brèves et articles les plus lus" data-i18n-alt="missions.m1.shot" />
+          </figure>
         </article>
 
         <article class="mission" data-reveal>
@@ -215,20 +222,33 @@
       <p class="eyebrow mono" data-i18n="contact.eyebrow">06 · ATTERRISSAGE</p>
       <h2 data-split data-i18n="contact.title">Fin de la transmission. À vous de jouer.</h2>
 
+      <!-- Le canal direct : l'email en grand, copiable en un geste -->
+      <div class="direct">
+        <p class="direct-label mono" data-i18n="contact.direct">ÉCRIVEZ-MOI DIRECTEMENT</p>
+        <div class="direct-row">
+          <a class="direct-email" href="mailto:salambadiene@esp.sn">salambadiene@esp.sn</a>
+          <button class="btn btn-secondary direct-copy" type="button" data-email="salambadiene@esp.sn" data-i18n="contact.copy">Copier</button>
+        </div>
+        <p class="direct-or mono" data-i18n="contact.or">OU PAR LE FORMULAIRE</p>
+      </div>
+
       <form id="contact-form" novalidate>
         <!-- Web3Forms : clé publique (faite pour être visible), les messages arrivent dans la boîte liée à la clé -->
         <input type="hidden" name="access_key" value="cf32334a-e172-4dc1-8a43-ab04816daae2" />
         <div class="field">
           <label for="f-name" class="mono" data-i18n="contact.name">VOTRE NOM</label>
-          <input id="f-name" name="name" type="text" required autocomplete="name" />
+          <input id="f-name" name="name" type="text" required autocomplete="name" aria-describedby="f-name-err" />
+          <p class="field-error" id="f-name-err"></p>
         </div>
         <div class="field">
           <label for="f-email" class="mono" data-i18n="contact.email">VOTRE EMAIL</label>
-          <input id="f-email" name="email" type="email" required autocomplete="email" />
+          <input id="f-email" name="email" type="email" required autocomplete="email" aria-describedby="f-email-err" />
+          <p class="field-error" id="f-email-err"></p>
         </div>
         <div class="field">
           <label for="f-msg" class="mono" data-i18n="contact.msg">VOTRE MESSAGE</label>
-          <textarea id="f-msg" name="message" rows="5" required></textarea>
+          <textarea id="f-msg" name="message" rows="5" required aria-describedby="f-msg-err"></textarea>
+          <p class="field-error" id="f-msg-err"></p>
         </div>
         <button class="btn btn-primary" type="submit" data-i18n="contact.send">Transmettre</button>
         <p class="form-status mono" id="form-status" role="status" aria-live="polite"></p>
@@ -237,7 +257,6 @@
       <div class="socials mono">
         <a href="https://github.com/lambiss12-hue" target="_blank" rel="noopener">GITHUB · LAMBISS12-HUE ↗</a>
         <a href="https://github.com/sllmb" target="_blank" rel="noopener">GITHUB · SLLMB ↗</a>
-        <a href="mailto:salambadiene@esp.sn">EMAIL ↗</a>
         <a href="cv-salamba-diene.pdf" download="CV-Salamba-Diene.pdf" data-i18n="cv.link">CV ↓</a>
       </div>
     </section>
