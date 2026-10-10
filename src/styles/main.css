@@ -296,13 +296,19 @@ main { overflow-x: clip; }
   transition: transform var(--d-micro) var(--ease-space);
 }
 .nav-links a.active::after { transform: translateX(-50%) scale(1); }
-.nav-right { display: flex; align-items: center; gap: var(--s-3); }
+/* Au-dessus du menu plein écran : la langue et le bouton de fermeture restent accessibles */
+.nav-right { display: flex; align-items: center; gap: var(--s-2); position: relative; z-index: 1; }
 .lang { color: var(--gris-lunaire); display: flex; gap: 6px; align-items: center; }
-.lang button { color: inherit; padding: 4px; transition: color var(--d-micro) ease; }
+/* Zones de toucher d'au moins 44 px (le texte reste petit, la cible non) */
+.lang { gap: 0; }
+.lang button { color: inherit; min-width: 40px; min-height: 44px; padding: 0 4px; transition: color var(--d-micro) ease; }
 .lang button.active, .lang button:hover { color: var(--cyan-glacial); }
 
 /* Burger : caché sur desktop */
-.burger { display: none; flex-direction: column; gap: 6px; padding: 8px; }
+.burger {
+  display: none; flex-direction: column; justify-content: center; align-items: center; gap: 6px;
+  width: 44px; height: 44px; margin-right: -11px;
+}
 .burger span {
   display: block; width: 22px; height: 1.5px;
   background: var(--blanc-stellaire);
@@ -326,6 +332,13 @@ body.menu-open .burger span:last-child { transform: translateY(-3.75px) rotate(-
   letter-spacing: 0.04em;
 }
 .hero-title { color: var(--gris-lunaire); margin-top: var(--s-2); text-wrap: balance; }
+.hero-status {
+  display: inline-flex; align-items: center; gap: 10px;
+  margin-top: var(--s-3);
+  padding: 8px 16px;
+  border: 1px solid rgba(118, 215, 232, 0.35); border-radius: 999px;
+  color: var(--cyan-glacial);
+}
 .hero-cta { margin-top: var(--s-6); }
 .hero-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--s-2); }
 .constellation { width: min(210px, 56vw); color: var(--cyan-glacial); margin-bottom: var(--s-3); }
@@ -334,7 +347,7 @@ body.menu-open .burger span:last-child { transform: translateY(-3.75px) rotate(-
 .constellation circle { fill: currentColor; }
 .scroll-hint {
   position: absolute; bottom: var(--s-4);
-  color: var(--gris-lunaire); font-size: 0.65rem;
+  color: var(--gris-lunaire); font-size: 0.75rem;
 }
 
 /* La séquence d'ouverture : ne joue que si JS est actif (.is-ready)
@@ -343,12 +356,13 @@ body.menu-open .burger span:last-child { transform: translateY(-3.75px) rotate(-
   html.js .constellation polyline { stroke-dasharray: 600; stroke-dashoffset: 600; }
   html.js .constellation circle,
   html.js .hero-name, html.js .hero-title,
-  html.js .hero-cta, html.js .scroll-hint { opacity: 0; }
+  html.js .hero-status, html.js .hero-cta, html.js .scroll-hint { opacity: 0; }
 
   /* Le nom d'abord, sans attente : il arrive pendant le fondu du préloader.
      La constellation se trace en même temps, en décor, sans retenir le reste. */
   html.js body.is-ready .hero-name { animation: rise 0.9s var(--ease-space) 0.1s forwards; }
   html.js body.is-ready .hero-title { animation: fade 0.6s ease 0.35s forwards; }
+  html.js body.is-ready .hero-status { animation: fade 0.6s ease 0.45s forwards; }
   html.js body.is-ready .hero-cta { animation: fade 0.6s ease 0.55s forwards; }
   html.js body.is-ready .constellation polyline { animation: trace 1.3s var(--ease-space) 0.2s forwards; }
   html.js body.is-ready .constellation .c-d { animation-delay: 0.55s; }
@@ -521,7 +535,7 @@ h2[data-split] .ch { display: inline-block; }
   border-radius: 999px;
   padding: 5px 12px;
   color: var(--gris-lunaire);
-  font-size: 0.68rem;
+  font-size: 0.75rem;
   transition: border-color var(--d-micro) ease;
 }
 .tags li:hover { border-color: var(--gris-lunaire); }
@@ -635,8 +649,9 @@ h2[data-split] .ch { display: inline-block; }
 #contact-form .btn { justify-self: start; }
 /* Messages déjà écrits en capitales : l'email du message d'échec reste en minuscules */
 .form-status { color: var(--cyan-glacial); min-height: 1.2em; text-transform: none; }
-.socials { display: flex; gap: var(--s-4); flex-wrap: wrap; }
+.socials { display: flex; gap: 0 var(--s-4); flex-wrap: wrap; }
 .socials a {
+  padding: 14px 0; /* 44 px de zone de toucher */
   color: var(--gris-lunaire); text-decoration: none;
   transition: color var(--d-micro) ease;
 }
@@ -744,7 +759,8 @@ h2[data-split] .ch { display: inline-block; }
     opacity: 0; visibility: hidden;
     transition: opacity var(--d-micro) ease, visibility var(--d-micro);
   }
-  .nav-links a { font-size: 1rem; }
+  .nav-links a { font-size: 1rem; padding: 12px 16px; }
+  .nav-links a::after { bottom: 4px; }
   body.menu-open .nav-links { opacity: 1; visibility: visible; }
   body.menu-open { overflow: hidden; }
   /* Cascade des liens à l'ouverture */

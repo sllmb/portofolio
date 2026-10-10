@@ -6,8 +6,8 @@
   "a11y.hero": "Introduction",
   "a11y.projects": "Projects",
 
-  "meta.title": "Salamba Diène — Web developer in exploration",
-  "meta.desc": "Space-themed portfolio of a creative developer: missions, journey and skills. Come aboard.",
+  "meta.title": "Salamba Diène — Junior web developer · Dakar",
+  "meta.desc": "Salamba Diène, junior web developer in Dakar (JavaScript, PHP, MySQL), looking for a first job: projects, journey and skills.",
 
   "preloader.systems": "SYSTEMS",
   "preloader.nav": "NAVIGATION",
@@ -21,7 +21,8 @@
   "nav.journey": "Journey",
   "nav.contact": "Contact",
 
-  "hero.title": "WEB DEVELOPER IN EXPLORATION · DAKAR",
+  "hero.title": "JUNIOR WEB DEVELOPER · DAKAR",
+  "hero.status": "LOOKING FOR MY FIRST JOB",
   "hero.cta": "Begin the journey",
   "cv.download": "Download CV (French)",
   "cv.link": "CV (FR) ↓",

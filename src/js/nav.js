@@ -3,7 +3,8 @@
    1. Fond + blur après 80px de scroll
    2. Se cache quand on descend, réapparaît quand on remonte
    3. Marque la section active (IntersectionObserver)
-   4. Menu plein écran mobile
+   4. Menu plein écran mobile (Échap le ferme, le reste de la page
+      devient inerte tant qu'il est ouvert)
    5. Clic sur une ancre → saut en WARP (via le starfield)
    6. Premier scroll quittant le hero → impulsion de warp
    ============================================================ */
@@ -35,9 +36,19 @@ export function initNav(starfield) {
   sections.forEach((s) => observer.observe(s));
 
   // --- 4 : menu mobile -------------------------------------------
-  burger.addEventListener('click', () => {
-    const open = document.body.classList.toggle('menu-open');
+  // Menu ouvert : la page derrière est inerte (ni clic, ni Tab, ni lecteur
+  // d'écran), le focus reste donc dans le menu et ses boutons
+  const behind = document.querySelectorAll('main, footer');
+  const setMenu = (open) => {
+    document.body.classList.toggle('menu-open', open);
     burger.setAttribute('aria-expanded', String(open));
+    behind.forEach((el) => { el.inert = open; });
+  };
+  burger.addEventListener('click', () => setMenu(!document.body.classList.contains('menu-open')));
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape' || !document.body.classList.contains('menu-open')) return;
+    setMenu(false);
+    burger.focus();
   });
 
   // --- 5 : ancres en warp ----------------------------------------
@@ -49,8 +60,7 @@ export function initNav(starfield) {
       const target = document.querySelector(href);
       if (!target) return;
       e.preventDefault();
-      document.body.classList.remove('menu-open');
-      burger.setAttribute('aria-expanded', 'false');
+      setMenu(false);
       // À l'arrivée, le focus clavier suit le saut (sinon Tab repart d'en haut)
       starfield.warpTo(target, () => {
         if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');

@@ -6,8 +6,8 @@
   "a11y.hero": "Introduction",
   "a11y.projects": "Projets",
 
-  "meta.title": "Salamba Diène — Développeuse web en exploration",
-  "meta.desc": "Portfolio spatial d'une développeuse créative : missions, parcours et compétences. Embarquez pour le voyage.",
+  "meta.title": "Salamba Diène — Développeuse web junior · Dakar",
+  "meta.desc": "Salamba Diène, développeuse web junior à Dakar (JavaScript, PHP, MySQL), en recherche d'un premier emploi : projets, parcours et compétences.",
 
   "preloader.systems": "SYSTÈMES",
   "preloader.nav": "NAVIGATION",
@@ -21,7 +21,8 @@
   "nav.journey": "Parcours",
   "nav.contact": "Contact",
 
-  "hero.title": "DÉVELOPPEUSE WEB EN EXPLORATION · DAKAR",
+  "hero.title": "DÉVELOPPEUSE WEB JUNIOR · DAKAR",
+  "hero.status": "EN RECHERCHE D'UN PREMIER EMPLOI",
   "hero.cta": "Commencer le voyage",
   "cv.download": "Télécharger le CV",
   "cv.link": "CV ↓",
