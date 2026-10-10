@@ -145,13 +145,32 @@
             <a href="https://github.com/lambiss12-hue/Xibaar_Yi" target="_blank" rel="noopener">GitHub ↗</a>
             <a href="https://xibaaryi.infinityfreeapp.com" target="_blank" rel="noopener" data-i18n="missions.demo">Démo ↗</a>
           </div>
-          <!-- La capture : la page d'accueil du site, dans un cadre de navigateur -->
+          <!-- Les captures : une grande vue dans un cadre de navigateur,
+               et des vignettes pour passer d'une page à l'autre (gallery.js) -->
           <figure class="mission-shot">
             <div class="mission-shot-bar mono" aria-hidden="true"><i></i><i></i><i></i><span>xibaaryi.infinityfreeapp.com</span></div>
             <img src="missions/xibaar-yi.webp" srcset="missions/xibaar-yi-720.webp 720w, missions/xibaar-yi.webp 1200w"
                  sizes="(max-width: 1100px) 90vw, 1000px" width="1200" height="750" loading="lazy" decoding="async"
                  alt="Page d'accueil de Xibaar Yi : derniers articles, brèves et articles les plus lus" data-i18n-alt="missions.m1.shot" />
           </figure>
+          <div class="shot-thumbs" role="group" aria-label="Captures de Xibaar Yi" data-i18n-aria="missions.m1.views">
+              <button type="button" class="shot-thumb" aria-pressed="true" data-shot="missions/xibaar-yi" data-alt="missions.m1.shot">
+                <img src="missions/xibaar-yi-thumb.webp" width="320" height="200" alt="" loading="lazy" decoding="async" />
+                <span class="mono" data-i18n="missions.m1.v1">Accueil</span>
+              </button>
+              <button type="button" class="shot-thumb" aria-pressed="false" data-shot="missions/xibaar-yi-article" data-alt="missions.m1.shot2">
+                <img src="missions/xibaar-yi-article-thumb.webp" width="320" height="200" alt="" loading="lazy" decoding="async" />
+                <span class="mono" data-i18n="missions.m1.v2">Article</span>
+              </button>
+              <button type="button" class="shot-thumb" aria-pressed="false" data-shot="missions/xibaar-yi-admin" data-alt="missions.m1.shot3">
+                <img src="missions/xibaar-yi-admin-thumb.webp" width="320" height="200" alt="" loading="lazy" decoding="async" />
+                <span class="mono" data-i18n="missions.m1.v3">Back-office</span>
+              </button>
+              <button type="button" class="shot-thumb" aria-pressed="false" data-shot="missions/xibaar-yi-moderation" data-alt="missions.m1.shot4">
+                <img src="missions/xibaar-yi-moderation-thumb.webp" width="320" height="200" alt="" loading="lazy" decoding="async" />
+                <span class="mono" data-i18n="missions.m1.v4">Modération</span>
+              </button>
+          </div>
         </article>
 
         <article class="mission" data-reveal>

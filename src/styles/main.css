@@ -582,6 +582,31 @@ h2[data-split] .ch { display: inline-block; }
   transition: transform var(--d-elem) var(--ease-space);
 }
 .mission-featured:hover .mission-shot img { transform: scale(1.015); }
+.mission-shot img.is-swapping { opacity: 0; }
+.mission-shot img { transition: transform var(--d-elem) var(--ease-space), opacity 180ms ease; }
+/* Les vignettes : une par page du site */
+.shot-thumbs {
+  display: grid; grid-template-columns: repeat(4, minmax(0, 160px));
+  gap: var(--s-2); margin-top: var(--s-2);
+}
+.shot-thumb {
+  display: grid; gap: 6px; padding: 0;
+  color: var(--gris-lunaire); text-align: left;
+  opacity: 0.7;
+  transition: opacity var(--d-micro) ease, color var(--d-micro) ease;
+}
+.shot-thumb img {
+  display: block; width: 100%; height: auto;
+  border: 1px solid var(--bordure); border-radius: 6px;
+  transition: border-color var(--d-micro) ease;
+}
+.shot-thumb span { font-size: 0.75rem; letter-spacing: 0.08em; }
+.shot-thumb:hover { opacity: 1; }
+.shot-thumb[aria-pressed="true"] { opacity: 1; color: var(--cyan-glacial); }
+.shot-thumb[aria-pressed="true"] img { border-color: var(--cyan-glacial); }
+@media (max-width: 479px) {
+  .shot-thumbs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
 
 /* ---------- Timeline (05 · Orbite) ---------- */
 .timeline { position: relative; padding-left: var(--s-4); }
