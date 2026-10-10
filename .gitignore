@@ -2,3 +2,11 @@ node_modules/
 dist/
 .DS_Store
 .impeccable/config.local.json
+
+# Outils d'IA : configurations locales et compétences installées
+# (.claude/launch.json reste suivi : il lance le serveur de dev)
+.agent/
+.gemini/
+.claude/agents/
+.claude/skills/
+.claude/settings.local.json
