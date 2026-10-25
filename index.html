@@ -119,9 +119,20 @@
           <ul class="skills">
             <li style="--s:1.0">HTML / CSS</li>
             <li style="--s:0.9">JavaScript</li>
-            <li style="--s:0.7">GSAP</li>
-            <li style="--s:0.6">Canvas 2D</li>
-            <li style="--s:0.5">Vite</li>
+            <li style="--s:0.7">React / Next.js</li>
+            <li style="--s:0.7">TypeScript</li>
+            <li style="--s:0.6">Tailwind CSS</li>
+            <li style="--s:0.6">GSAP</li>
+            <li style="--s:0.5">Canvas 2D</li>
+          </ul>
+        </div>
+        <div class="constellation-group">
+          <h3 class="mono" data-i18n="skills.g4">BACKEND</h3>
+          <ul class="skills">
+            <li style="--s:0.8">PHP</li>
+            <li style="--s:0.8">MySQL</li>
+            <li style="--s:0.7">Supabase</li>
+            <li style="--s:0.6">PostgreSQL</li>
           </ul>
         </div>
         <div class="constellation-group">
@@ -129,7 +140,8 @@
           <ul class="skills">
             <li style="--s:0.8">Git / GitHub</li>
             <li style="--s:0.7">Figma</li>
-            <li style="--s:0.6">Netlify</li>
+            <li style="--s:0.6">Vite</li>
+            <li style="--s:0.6">Vercel</li>
             <li style="--s:0.5">Lighthouse</li>
           </ul>
         </div>
@@ -152,6 +164,45 @@
       <div class="missions">
         <!-- La trajectoire : la ligne qui se trace au scroll entre les missions -->
         <div class="trajectory" aria-hidden="true"></div>
+
+        <article class="mission mission-featured" data-reveal>
+          <div class="mission-planet" data-planet="rocky" aria-hidden="true"></div>
+          <div class="mission-meta mono">
+            <span class="status"><span class="dot"></span><span data-i18n="missions.m4.status">EN LIGNE</span></span>
+            <span data-i18n="missions.m4.date">DÉPART — 2026.10</span>
+          </div>
+          <h3 data-i18n="missions.m4.name">Énora Cosmetics</h3>
+          <p data-i18n="missions.m4.desc">Une vraie boutique en ligne de soins du corps, livrée à Dakar. Next.js et TypeScript pour le site, Supabase pour la base de données, les comptes et les photos. On commande en une seule page (paiement à la livraison, Wave, Orange Money ou WhatsApp) : le total, le stock et le code promo sont vérifiés en base dans une même transaction. Un back-office gère commandes, stocks, produits, avis et articles. Accès protégés table par table (RLS), tests Vitest et Playwright.</p>
+          <ul class="tags mono"><li>Next.js</li><li>TypeScript</li><li>Supabase</li><li>Tailwind CSS</li></ul>
+          <div class="mission-links">
+            <a href="https://github.com/sllmb/enora_cosmetics" target="_blank" rel="noopener">GitHub ↗</a>
+            <a href="https://enora-cosmetics.vercel.app" target="_blank" rel="noopener" data-i18n="missions.demo">Démo ↗</a>
+          </div>
+          <figure class="mission-shot">
+            <div class="mission-shot-bar mono" aria-hidden="true"><i></i><i></i><i></i><span>enora-cosmetics.vercel.app</span></div>
+            <img src="missions/enora.webp" srcset="missions/enora-720.webp 720w, missions/enora.webp 1200w"
+                 sizes="(max-width: 1100px) 90vw, 1000px" width="1200" height="750" loading="lazy" decoding="async"
+                 alt="Page d'accueil d'Énora Cosmetics : « Le soin du corps, en toute élégance », avec des savons Dove" data-i18n-alt="missions.m4.shot" />
+          </figure>
+          <div class="shot-thumbs" role="group" aria-label="Captures d'Énora Cosmetics" data-i18n-aria="missions.m4.views">
+              <button type="button" class="shot-thumb" aria-pressed="true" data-shot="missions/enora" data-alt="missions.m4.shot">
+                <img src="missions/enora-thumb.webp" width="320" height="200" alt="" loading="lazy" decoding="async" />
+                <span class="mono" data-i18n="missions.m4.v1">Accueil</span>
+              </button>
+              <button type="button" class="shot-thumb" aria-pressed="false" data-shot="missions/enora-boutique" data-alt="missions.m4.shot2">
+                <img src="missions/enora-boutique-thumb.webp" width="320" height="200" alt="" loading="lazy" decoding="async" />
+                <span class="mono" data-i18n="missions.m4.v2">Boutique</span>
+              </button>
+              <button type="button" class="shot-thumb" aria-pressed="false" data-shot="missions/enora-produit" data-alt="missions.m4.shot3">
+                <img src="missions/enora-produit-thumb.webp" width="320" height="200" alt="" loading="lazy" decoding="async" />
+                <span class="mono" data-i18n="missions.m4.v3">Produit</span>
+              </button>
+              <button type="button" class="shot-thumb" aria-pressed="false" data-shot="missions/enora-conseil" data-alt="missions.m4.shot4">
+                <img src="missions/enora-conseil-thumb.webp" width="320" height="200" alt="" loading="lazy" decoding="async" />
+                <span class="mono" data-i18n="missions.m4.v4">Conseils</span>
+              </button>
+          </div>
+        </article>
 
         <article class="mission mission-featured" data-reveal>
           <div class="mission-planet" data-planet="gas" aria-hidden="true"></div>
@@ -251,9 +302,15 @@
         </li>
         <li class="step">
           <span class="point" aria-hidden="true"></span>
+          <span class="date mono">2026</span>
+          <h3 data-i18n="journey.j5.t">Le premier lancement</h3>
+          <p data-i18n="journey.j5.d">Énora Cosmetics, une boutique en ligne en production : React avec Next.js, TypeScript et Supabase, du catalogue jusqu'au back-office.</p>
+        </li>
+        <li class="step">
+          <span class="point" aria-hidden="true"></span>
           <span class="date mono">→</span>
           <h3 data-i18n="journey.j4.t">Prochaine destination</h3>
-          <p data-i18n="journey.j4.d">React, puis l'écosystème complet. Objectif : contribuer à des projets réels.</p>
+          <p data-i18n="journey.j4.d">Aller plus loin avec React, TypeScript et le backend. Objectif : rejoindre une équipe et contribuer à des projets réels.</p>
         </li>
         </ol>
       </div>
